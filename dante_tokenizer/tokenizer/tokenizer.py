@@ -1,56 +1,13 @@
-# coding: utf-8
-#
-# Natural Language Toolkit: Twitter Tokenizer
-#
-# Copyright (C) 2001-2021 NLTK Project
-# Author: Christopher Potts <cgpotts@stanford.edu>
-#         Ewan Klein <ewan@inf.ed.ac.uk> (modifications)
-#         Pierpaolo Pantone <> (modifications)
-# URL: <http://nltk.org/>
-# For license information, see LICENSE.TXT
-#
-
-
-"""
-Twitter-aware tokenizer, designed to be flexible and easy to adapt to new
-domains and tasks. The basic logic is this:
-
-1. The tuple regex_strings defines a list of regular expression
-   strings.
-
-2. The regex_strings strings are put, in order, into a compiled
-   regular expression object called word_re.
-
-3. The tokenization is done by word_re.findall(s), where s is the
-   user-supplied string, inside the tokenize() method of the class
-   Tokenizer.
-
-4. When instantiating Tokenizer objects, there is a single option:
-   preserve_case.  By default, it is set to True. If it is set to
-   False, then the tokenizer will downcase everything except for
-   emoticons.
-
-"""
-
-
-######################################################################
-
-import regex  # https://github.com/nltk/nltk/issues/2409
+import argparse
+import regex
 import html
 
-######################################################################
-# The following strings are components in the regular expression
-# that is used for tokenizing. It's important that phone_number
-# appears first in the final regex (since it can contain whitespace).
-# It also could matter that tags comes after emoticons, due to the
-# possibility of having text like
-#
-#     <:| and some text >:)
-#
-# Most importantly, the final element should always be last, since it
-# does a last ditch whitespace-based tokenization of whatever is left.
+from nltk import tokenize
 
-# ToDo: Update with http://en.wikipedia.org/wiki/List_of_emoticons ?
+from dante_tokenizer.data.load import read_test_data
+from dante_tokenizer.evaluate import evaluate_dataset
+
+#region Regex definitions
 
 # This particular element is used in a couple ways, so we define it
 # with a name:
@@ -154,8 +111,10 @@ REGEXPS = (
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
     (?:0?[1-9]|[12][0-9]|3[01])[\/\-](?:0?[1-9]|1[012])[\/\-][\d]{2,}
     |
+    (?:[\w]+\/) # p/ e c/
+    |
     # R$ U$
-    (?:[\w]\$)
+    (?:[\w]+\$)
     |
     (?:[+\-]?\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
@@ -182,11 +141,59 @@ EMOTICON_RE = regex.compile(EMOTICONS, regex.VERBOSE | regex.I | regex.UNICODE)
 # These are for regularizing HTML entities to Unicode:
 ENT_RE = regex.compile(r"&(#?(x?))([^&;\s]+);")
 
+#endregion
 
-######################################################################
-# Functions for converting html entities
-######################################################################
+#region Functions for converting html entities
 
+
+class DanteTokenizer:
+    r"""
+    Tokenizer for stock-market tweets.
+
+        >>> from nltk.tokenize import DanteTokenizer
+        >>> tknzr = DanteTokenizer()
+        >>> s0 = "This is a cooool #dummysmiley: :-) :-P <3 and some arrows < > -> <--"
+        >>> tknzr.tokenize(s0)
+        ['This', 'is', 'a', 'cooool', '#dummysmiley', ':', ':-)', ':-P', '<3', 'and', 'some', 'arrows', '<', '>', '->', '<--']
+
+    Examples using `strip_handles` and `reduce_len parameters`:
+
+        >>> tknzr = DanteTokenizer(strip_handles=True, reduce_len=True)
+        >>> s1 = '@remy: This is waaaaayyyy too much for you!!!!!!'
+        >>> tknzr.tokenize(s1)
+        [':', 'This', 'is', 'waaayyy', 'too', 'much', 'for', 'you', '!', '!', '!']
+    """
+
+    def __init__(self, preserve_case=True, reduce_len=False, strip_handles=False):
+        self.preserve_case = preserve_case
+        self.reduce_len = reduce_len
+        self.strip_handles = strip_handles
+
+    def tokenize(self, text):
+        """
+        :param text: str
+        :rtype: list(str)
+        :return: a tokenized list of strings; concatenating this list returns\
+        the original string if `preserve_case=False`
+        """
+        # Fix HTML character entities:
+        text = _replace_html_entities(text)
+        # Remove username handles
+        if self.strip_handles:
+            text = remove_handles(text)
+        # Normalize word lengthening
+        if self.reduce_len:
+            text = reduce_lengthening(text)
+        # Shorten problematic sequences of characters
+        safe_text = HANG_RE.sub(r"\1\1\1", text)
+        # Tokenize:
+        words = WORD_RE.findall(safe_text)
+        # Possibly alter the case, but avoid changing emoticons like :D into :d:
+        if not self.preserve_case:
+            words = list(
+                map((lambda x: x if EMOTICON_RE.search(x) else x.lower()), words)
+            )
+        return words
 
 def _str_to_unicode(text, encoding=None, errors="strict"):
     if encoding is None:
@@ -256,63 +263,10 @@ def _replace_html_entities(text, keep=(), remove_illegal=True, encoding="utf-8")
     return ENT_RE.sub(_convert_entity, _str_to_unicode(text, encoding))
 
 
-######################################################################
 
+#endregion
 
-class TweetTokenizer:
-    r"""
-    Tokenizer for tweets.
-
-        >>> from nltk.tokenize import TweetTokenizer
-        >>> tknzr = TweetTokenizer()
-        >>> s0 = "This is a cooool #dummysmiley: :-) :-P <3 and some arrows < > -> <--"
-        >>> tknzr.tokenize(s0)
-        ['This', 'is', 'a', 'cooool', '#dummysmiley', ':', ':-)', ':-P', '<3', 'and', 'some', 'arrows', '<', '>', '->', '<--']
-
-    Examples using `strip_handles` and `reduce_len parameters`:
-
-        >>> tknzr = TweetTokenizer(strip_handles=True, reduce_len=True)
-        >>> s1 = '@remy: This is waaaaayyyy too much for you!!!!!!'
-        >>> tknzr.tokenize(s1)
-        [':', 'This', 'is', 'waaayyy', 'too', 'much', 'for', 'you', '!', '!', '!']
-    """
-
-    def __init__(self, preserve_case=True, reduce_len=False, strip_handles=False):
-        self.preserve_case = preserve_case
-        self.reduce_len = reduce_len
-        self.strip_handles = strip_handles
-
-    def tokenize(self, text):
-        """
-        :param text: str
-        :rtype: list(str)
-        :return: a tokenized list of strings; concatenating this list returns\
-        the original string if `preserve_case=False`
-        """
-        # Fix HTML character entities:
-        text = _replace_html_entities(text)
-        # Remove username handles
-        if self.strip_handles:
-            text = remove_handles(text)
-        # Normalize word lengthening
-        if self.reduce_len:
-            text = reduce_lengthening(text)
-        # Shorten problematic sequences of characters
-        safe_text = HANG_RE.sub(r"\1\1\1", text)
-        # Tokenize:
-        words = WORD_RE.findall(safe_text)
-        # Possibly alter the case, but avoid changing emoticons like :D into :d:
-        if not self.preserve_case:
-            words = list(
-                map((lambda x: x if EMOTICON_RE.search(x) else x.lower()), words)
-            )
-        return words
-
-
-######################################################################
-# Normalization Functions
-######################################################################
-
+#region Normalization functions
 
 def reduce_lengthening(text):
     """
@@ -333,19 +287,71 @@ def remove_handles(text):
     # Substitute handles with ' ' to ensure that text on either side of removed handles are tokenized correctly
     return pattern.sub(" ", text)
 
+#endregion
 
-######################################################################
-# Tokenization Function
-######################################################################
+def predict_nltk_word_tokenizer(sentences: list) -> list:
+    """ 
+    Predict all sentences sequentially.
 
-
-def casual_tokenize(text, preserve_case=True, reduce_len=False, strip_handles=False):
+    Parameters
+    ----------
+    sentences: list
+        List of strings with pre-processed sentences.
+    
+    Retunrs
+    -------
+    list:
+        List of predicted tokens for each sentenec.
     """
-    Convenience function for wrapping the tokenizer.
+    pred_tokens = []
+
+    for sentence in sentences:
+        pred_tokens.append(tokenize.word_tokenize(sentence, language="portuguese"))
+
+    return pred_tokens
+
+def predict_nltk_twitter_tokenizer(sentences: list) -> list:
+    """ 
+    Predict all sentences sequentially.
+
+    Parameters
+    ----------
+    sentences: list
+        List of strings with pre-processed sentences.
+    
+    Retunrs
+    -------
+    list:
+        List of predicted tokens for each sentenec.
     """
-    return TweetTokenizer(
-        preserve_case=preserve_case, reduce_len=reduce_len, strip_handles=strip_handles
-    ).tokenize(text)
+    pred_tokens = []
 
+    tokenizer = tokenize.TweetTokenizer()
 
-###############################################################################
+    for sentence in sentences:
+        pred_tokens.append(tokenizer.tokenize(sentence))
+
+    return pred_tokens
+
+def predict_dante_tokenizer(sentences: list) -> list:
+    """ 
+    Predict all sentences sequentially.
+
+    Parameters
+    ----------
+    sentences: list
+        List of strings with pre-processed sentences.
+    
+    Retunrs
+    -------
+    list:
+        List of predicted tokens for each sentenec.
+    """
+    pred_tokens = []
+
+    tokenizer = DanteTokenizer()
+
+    for sentence in sentences:
+        pred_tokens.append(tokenizer.tokenize(sentence))
+
+    return pred_tokens

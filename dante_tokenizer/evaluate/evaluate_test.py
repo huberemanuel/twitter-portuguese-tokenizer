@@ -1,4 +1,4 @@
-from evaluate import evaluate_sentence
+from dante_tokenizer.evaluate import evaluate_sentence
 
 
 def test_evaluate_sentence():
