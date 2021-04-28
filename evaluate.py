@@ -1,5 +1,6 @@
 import re
 
+from processing import expand_contractions
 
 def longest_common_token_sequence(left: list, right: list) -> int:
     """
@@ -95,6 +96,8 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
             csv_line = csv_data[sent_id]
             csv_matches = re.findall(csv_split_regex, csv_line)
             sentence = csv_matches[1][1]
+            # Pre-processing text
+            sentence = expand_contractions(sentence)
 
             sent_ids.append(sent_id)
             sent_texts.append(sentence)
