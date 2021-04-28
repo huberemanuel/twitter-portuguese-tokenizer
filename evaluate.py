@@ -1,6 +1,6 @@
 import re
 
-from processing import expand_contractions
+from processing import expand_contractions, remove_quotes
 
 def longest_common_token_sequence(left: list, right: list) -> int:
     """
@@ -73,6 +73,7 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
     conllu_sentence_id_regex = r"sent_id = ([\d]+)"
     conllu_token_split_regex = r"\d\t([^\t]*)"
     csv_split_regex = r"(?:^|,)(?=[^\"“]|(\"“)?)[\"“]?((?(1)[^\"“]*|[^,\"“]*))[\"“]?(?=,|$)"
+    csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
 
     csv_file = open(csv_path, "r")
     csv_data = csv_file.readlines()
@@ -95,8 +96,9 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
 
             csv_line = csv_data[sent_id]
             csv_matches = re.findall(csv_split_regex, csv_line)
-            sentence = csv_matches[1][1]
+            sentence = csv_matches[1]
             # Pre-processing text
+            sentence = remove_quotes(sentence)
             sentence = expand_contractions(sentence)
 
             sent_ids.append(sent_id)
