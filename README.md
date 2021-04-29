@@ -1,5 +1,5 @@
 # Twitter Portuguese Tokenizer
-Tokenizador para Tweets para o português, voltado ao mercado de ações (Dataset Dante).
+Tokenizador de Tweets para o português, voltado ao mercado de ações (Dataset Dante).
 
 ## Requerimentos
 
