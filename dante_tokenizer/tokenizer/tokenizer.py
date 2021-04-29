@@ -105,8 +105,11 @@ REGEXPS = (
     r"""[\w.+-]+@[\w-]+\.(?:[\w-]\.?)+[\w-]""",
     # Remaining word types:
     r"""
-    # (?:[^\W\d_](?:[^\W\d_]|['\-_])+[^\W\d_]) # Words with apostrophes or dashes.
-    (?:[$]?[^\W_](?:[^\W_]|['\-_])+[^\W_]) # Words with apostrophes or dashes, considering numbers TODO: Mencionar alteração.
+    (?:\b[\w]{4}-[\w]{1,2}\b) # lren-nm elet-n1
+    |
+    (?:\b[\w]{3,5}-?[\d]{1}\b) # JSB-3 Eletr6
+    |
+    (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
     (?:0?[1-9]|[12][0-9]|3[01])[\/\-](?:0?[1-9]|1[012])[\/\-][\d]{2,}
@@ -116,7 +119,9 @@ REGEXPS = (
     # R$ U$
     (?:[\w]+\$)
     |
-    (?:[+\-]?\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
+    \b(?:[a-zA-Z]\.){2,} # Acronyms like: J.B.S.A
+    |
+    (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
     (?:[\w_]+)                     # Words without apostrophes or dashes.
     |
