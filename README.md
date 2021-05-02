@@ -16,7 +16,7 @@ make install
 O pacote será adicionado ao seu ambiente python. Para tokenizar textos, basta seguir os seguintes passos:
 
 ```python
->>> from dante_tokenizer.tokenizer import DanteTokenizer
+>>> from dante_tokenizer import DanteTokenizer
 >>> tokenizer = DanteTokenizer()
 >>> tokenizer.tokenize("A DANT3 está em alta!")
 ['A', 'DANT3', 'está', 'em', 'alta', '!']
