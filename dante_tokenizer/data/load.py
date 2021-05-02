@@ -2,6 +2,33 @@ import re
 
 from dante_tokenizer.data.preprocessing import expand_contractions, remove_quotes
 
+def read_tokens_from_csv(csv_path: str) -> list:
+    """
+    """
+    sent_ids = []
+    sent_texts = []
+
+    csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
+
+    csv_file = open(csv_path, "r")
+    csv_data = csv_file.readlines()
+
+    for csv_line in csv_data[1:]:
+
+        tokens_matches = re.findall(csv_split_regex, csv_line)
+
+        sent_id = tokens_matches[0]
+        sent_text = tokens_matches[1]
+        sent_text = remove_quotes(sent_text)
+        sent_text = expand_contractions(sent_text)
+
+        sent_ids.append(sent_id)
+        sent_texts.append(sent_text)
+
+    csv_file.close()
+
+    return sent_ids, sent_texts
+
 def read_test_data(csv_path: str, conllu_path: str) -> dict:
     """
     Read the unparsed sentences from a csv formatted file, expecting the second 
@@ -34,7 +61,6 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
     conllu_sentence_regex = r"(# newdoc[\s\S]*?[\r\n]{2})"
     conllu_sentence_id_regex = r"sent_id = ([\d]+)"
     conllu_token_split_regex = r"\d\t([^\t]*)"
-    csv_split_regex = r"(?:^|,)(?=[^\"“]|(\"“)?)[\"“]?((?(1)[^\"“]*|[^,\"“]*))[\"“]?(?=,|$)"
     csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
 
     csv_file = open(csv_path, "r")

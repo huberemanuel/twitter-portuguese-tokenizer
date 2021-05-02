@@ -76,6 +76,9 @@ def remove_quotes(text: str) -> str:
         Cleaned text.
     """
 
+    if len(text) < 3:
+        return text
+
     text = text.replace("\'\'", "\"")
 
     quote_marks = ["\"", "“", "”"]
