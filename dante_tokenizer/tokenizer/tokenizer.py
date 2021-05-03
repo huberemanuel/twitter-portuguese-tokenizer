@@ -25,6 +25,8 @@ EMOTICONS = r"""
       |
       (?:\b[oO].[oO]\b)          # O.o O.o o.o O.O
       |
+      (?:\*-\*)
+      |
       <3                         # heart
     )"""
 
