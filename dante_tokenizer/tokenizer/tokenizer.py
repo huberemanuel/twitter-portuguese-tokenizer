@@ -123,6 +123,8 @@ REGEXPS = (
     # R$ U$
     (?:[\w]+\$)
     |
+    (?:%k|&lt) # %k and &lt
+    |
     \b(?:[a-zA-Z]\.){2,} # Acronyms like: J.B.S.A
     |
     (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
