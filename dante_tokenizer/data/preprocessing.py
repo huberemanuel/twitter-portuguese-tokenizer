@@ -39,6 +39,24 @@ constractions = {
     r"(?<![\w.])Pelos(?![$\w])": "Por os",
 }
 
+def split_monetary_tokens(text: str) -> str:
+    """
+    Split monetary text and numbers.
+    Ex: Sr. K tem 10milhões -> Sr. K tem 10 milhões
+
+    Parameters
+    ----------
+    text: str
+        Input sentence.
+    
+    Returns
+    -------
+    str:
+        Processed sentence.
+    """
+    text = re.sub(r"(\d)((?i)milh[õoaã][oe]s?|mil)", r"\g<1> \g<2>",text)
+    return text
+
 def expand_contractions(text: str) -> str:
     """
     Replace contractions to their based form.
