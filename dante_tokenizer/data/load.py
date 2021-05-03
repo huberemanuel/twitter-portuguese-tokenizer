@@ -21,7 +21,7 @@ def read_tokens_from_csv(csv_path: str) -> list:
         sent_text = tokens_matches[1]
         sent_text = remove_quotes(sent_text)
         sent_text = expand_contractions(sent_text)
-        sent_texts = split_monetary_tokens(text)
+        sent_text = split_monetary_tokens(sent_text)
 
         sent_ids.append(sent_id)
         sent_texts.append(sent_text)
