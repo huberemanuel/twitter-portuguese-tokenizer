@@ -1,5 +1,7 @@
 import re
 
+import numpy as np
+
 from dante_tokenizer.data.load import read_test_data
 
 
@@ -43,7 +45,7 @@ def longest_common_token_sequence(left: list, right: list) -> int:
 
 def evaluate_dataset(pred_tokens: list, true_tokens: list, complete_metrics:bool = False) -> (float, float):
     """
-    Evaluate tokenizer's results, returning precision, recall and extra_metrics if
+    Evaluate tokenizer's results, returning precision, recall, f-score and extra_metrics if
     `complete_metrics` is set to True. 
 
     Parameters
@@ -57,8 +59,8 @@ def evaluate_dataset(pred_tokens: list, true_tokens: list, complete_metrics:bool
     
     Returns
     -------
-    (float, float)
-        Precision and Recall measurements.
+    ((float, float), (float, float), (float, float))
+        Precision, Recall and F-score measurements (mean, std).
     """
     assert len(pred_tokens) == len(true_tokens)
     n_sents = len(pred_tokens)
@@ -66,18 +68,25 @@ def evaluate_dataset(pred_tokens: list, true_tokens: list, complete_metrics:bool
     false_positives = 0
     false_negatives = 0
     incorrect_sentences_ids = []
+    precision_scores = []
+    recall_scores = []
+    f_scores = []
 
     for i in range(n_sents):
         tp, fp, fn = evaluate_sentence(pred_tokens[i], true_tokens[i])
         true_positives += tp
         false_positives += fp
         false_negatives += fn
+        precision_scores.append( tp / (tp + fp + 1e-9) )
+        recall_scores.append( tp / (tp + fn + 1e-9) )
+        f_scores.append( 2 * precision_scores[-1]*recall_scores[-1]/(precision_scores[-1]+recall_scores[-1]) )
 
         if fp > 0 or fn > 0:
             incorrect_sentences_ids.append(i)
 
-    precision = true_positives / (true_positives + false_positives + 1e-9)
-    recall = true_positives / (true_positives + false_negatives + 1e-9)
+    precision = (np.mean(precision_scores), np.std(precision_scores))
+    recall = (np.mean(recall_scores), np.std(recall_scores))
+    f_score = (np.mean(f_scores), np.std(f_scores))
 
     if complete_metrics:
         additional_metrics = {
@@ -86,9 +95,9 @@ def evaluate_dataset(pred_tokens: list, true_tokens: list, complete_metrics:bool
             "false_negatives": false_negatives,
             "incorrect_sentences_ids": incorrect_sentences_ids
         }
-        return precision, recall, additional_metrics
+        return precision, recall, f_score, additional_metrics
 
-    return precision, recall
+    return precision, recall, f_score
 
 def evaluate_sentence(pred_tokens: list, true_tokens: list) -> (int, int):
     """

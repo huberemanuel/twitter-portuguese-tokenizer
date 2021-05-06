@@ -29,9 +29,9 @@ def main():
     for name, tokenizer in tokenizers:
         pred_tokens = tokenizer(sentences)
 
-        precision, recall, extra_metrics = evaluate_dataset(pred_tokens, true_tokens, complete_metrics=True)
+        precision, recall, f_score, extra_metrics = evaluate_dataset(pred_tokens, true_tokens, complete_metrics=True)
         
-        print((f"{name} precision: {precision*100}, recall: {recall*100} true_positives: {extra_metrics['true_positives']} "
+        print((f"{name} precision: {precision}, recall: {recall}, f_score: {f_score} true_positives: {extra_metrics['true_positives']} "
                f"false_positives: {extra_metrics['false_positives']} false_negatives: {extra_metrics['false_negatives']} "))
 
         if args.debug:
@@ -43,3 +43,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
