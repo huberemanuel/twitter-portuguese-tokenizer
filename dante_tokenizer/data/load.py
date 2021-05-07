@@ -2,8 +2,20 @@ import re
 
 from dante_tokenizer.data.preprocessing import expand_contractions, remove_quotes, split_monetary_tokens
 
-def read_tokens_from_csv(csv_path: str) -> list:
+def read_tokens_from_csv(csv_path: str) -> (list, list):
     """
+    Read csv file and return tokens. The first colulmn should be 
+    the tweet_id and the second the sentence text.
+
+    Parameters
+    ----------
+    csv_path: str
+        Full path to the csv file.
+
+    Returns
+    -------
+    (list, list):
+        List of sentence ids and sentence texts.
     """
     sent_ids = []
     sent_texts = []
