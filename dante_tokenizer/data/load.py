@@ -2,7 +2,7 @@ import re
 
 from dante_tokenizer.data.preprocessing import expand_contractions, remove_quotes, split_monetary_tokens
 
-def read_tokens_from_csv(csv_path: str) -> (list, list):
+def read_tokens_from_csv(csv_path: str, start_line:int = 1, n_sentences:int = -1) -> (list, list):
     """
     Read csv file and return tokens. The first colulmn should be 
     the tweet_id and the second the sentence text.
@@ -11,6 +11,11 @@ def read_tokens_from_csv(csv_path: str) -> (list, list):
     ----------
     csv_path: str
         Full path to the csv file.
+    start_line: int
+        Line number to start the reading
+    n_sentences: int
+        Number of sentences to retrieve sequentially from csv data.
+        If n_sentences == -1, then it will return all lines.
 
     Returns
     -------
@@ -20,12 +25,23 @@ def read_tokens_from_csv(csv_path: str) -> (list, list):
     sent_ids = []
     sent_texts = []
 
+    # Unprocessable parameters
+    if n_sentences < -1:
+        raise ValueError("n_sentences must be a positive or equal to -1")
+    elif start_line <= 0:
+        raise ValueError("start_line must be greater than 0")
+
     csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
 
     csv_file = open(csv_path, "r")
     csv_data = csv_file.readlines()
 
-    for csv_line in csv_data[1:]:
+    if n_sentences == -1:
+        n_sentences = len(csv_data)
+    else:
+        n_sentences = min(len(csv_data), n_sentences + 1 + start_line)
+
+    for csv_line in csv_data[start_line:n_sentences]:
 
         tokens_matches = re.findall(csv_split_regex, csv_line)
 
