@@ -5,7 +5,7 @@ from dante_tokenizer.tokenizer import DanteTokenizer
 from dante_tokenizer.data.load import read_tokens_from_csv
 
 
-def tokenize_csv(csv_path: str) -> list:
+def tokenize_csv(csv_path: str, start_line:int, n_sentences: int) -> list:
     """ 
     Runs DanteTokenizer for each row in the csv file, it is expected
     to the first column be the sentence id and the second to be the
@@ -22,7 +22,7 @@ def tokenize_csv(csv_path: str) -> list:
         List of parsed tokens for each sentence.
     """
     
-    sent_ids, sent_texts = read_tokens_from_csv(csv_path)
+    sent_ids, sent_texts = read_tokens_from_csv(csv_path, start_line, n_sentences)
     tokenizer = DanteTokenizer()
     sent_tokens = list(map(tokenizer.tokenize, sent_texts))
 
@@ -88,9 +88,11 @@ def save_conllu(conllu_text: list, file_name: str) -> None:
 def main():
     parser = argparse.ArgumentParser("Transforms csv file to conllu file")
     parser.add_argument("csv_path", type=str, help="Full path to the csv file")
+    parser.add_argument("--start_line", type=int, default=1, help="Start reading csv from specified line")
+    parser.add_argument("--n_sentences", type=int, default=-1, help="Read n_sentences from csv data")
     args = parser.parse_args()
     doc_name = os.path.basename(args.csv_path)
-    sent_ids, sent_tokens, sent_texts = tokenize_csv(args.csv_path)
+    sent_ids, sent_tokens, sent_texts = tokenize_csv(args.csv_path, args.start_line, args.n_sentences)
     conllu_text = tokens_to_conllu(doc_name, sent_ids, sent_tokens, sent_texts)
     save_conllu(conllu_text, f"{doc_name}.conllu")
 

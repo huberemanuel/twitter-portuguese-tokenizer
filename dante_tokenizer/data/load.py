@@ -39,7 +39,7 @@ def read_tokens_from_csv(csv_path: str, start_line:int = 1, n_sentences:int = -1
     if n_sentences == -1:
         n_sentences = len(csv_data)
     else:
-        n_sentences = min(len(csv_data), n_sentences + 1 + start_line)
+        n_sentences = min(len(csv_data), n_sentences + start_line)
 
     for csv_line in csv_data[start_line:n_sentences]:
 
