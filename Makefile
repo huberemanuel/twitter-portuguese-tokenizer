@@ -15,4 +15,4 @@ create-conllu:
 ifdef csv_path
 	python3 -m dante_tokenizer.apps.csv_to_conllu $(csv_path)
 endif
-	
+
