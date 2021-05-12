@@ -21,8 +21,8 @@ def main():
     ids, sentences, true_tokens = read_test_data(args.csv_path, args.conllu_path)
     
     tokenizers = [
-        # ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
-        # ("nltk Twitter Tokenizer", predict_nltk_twitter_tokenizer),
+        ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
+        ("nltk Twitter Tokenizer", predict_nltk_twitter_tokenizer),
         ("DANTE Tokenizer", predict_dante_tokenizer)
     ]
 
