@@ -117,7 +117,7 @@ REGEXPS = (
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
-    (?:0?[1-9]|[12][0-9]|3[01])[\/\-](?:0?[1-9]|1[012])[\/\-][\d]{2,}
+    [\d\w]+(?:\/|\.|\-)[\d\w]+(?:(?:\/|\.|\-)[\d\w]+)?
     |
     (?:[\w]+\/) # p/ e c/
     |
