@@ -88,8 +88,8 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
 
     # TODO: Fix this regex, Won't work with last line from conllu file.
     conllu_sentence_regex = r"(# newdoc[\s\S]*?[\r\n]{2})"
-    conllu_sentence_id_regex = r"sent_id = ([\d]+)"
-    conllu_token_split_regex = r"\d\t([^\t]*)"
+    conllu_sentence_id_regex = r"sent_id = (dante_01_.*)$"
+    conllu_token_split_regex = r"^[\d]+\t([^\t]*)"
     csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
 
     csv_file = open(csv_path, "r")
