@@ -79,7 +79,7 @@ def evaluate_dataset(pred_tokens: list, true_tokens: list, complete_metrics:bool
         false_negatives += fn
         precision_scores.append( tp / (tp + fp + 1e-9) )
         recall_scores.append( tp / (tp + fn + 1e-9) )
-        f_scores.append( 2 * precision_scores[-1]*recall_scores[-1]/(precision_scores[-1]+recall_scores[-1]) )
+        f_scores.append( 2 * precision_scores[-1]*recall_scores[-1]/(precision_scores[-1]+recall_scores[-1] + 1e-9) )
 
         if fp > 0 or fn > 0:
             incorrect_sentences_ids.append(i)
