@@ -36,8 +36,28 @@ from dante_tokenizer.data.preprocessing import expand_contractions
     ("numa", "em uma"),
     ("nuns", "em uns"),
     ("numas", "em umas"),
+    ("daqui", "de aqui"),
+    ("desta", "de esta"),
+    ("deste", "de este"),
+    ("destas", "de estas"),
+    ("destes", "de estes"),
+    ("daí", "de aí"),
+    ("donde", "de onde"),
+    ("daquele", "de aquele"),
+    ("daquela", "de aquela"),
+    ("daqueles", "de aqueles"),
+    ("daquelas", "de aquelas"),
+    ("disto", "de isto"),
+    ("disso", "de isso"),
+    ("desse", "de esse"),
+    ("daquilo", "de aquilo"),
+    ("dela", "de ela"),
+    ("dele", "de ele"),
+    ("delas", "de elas"),
+    ("deles", "de eles"),
+    ("nisto", "em isto"),
 ])
-def tisest_contraction(contracted: str, expanded: str):
+def test_contraction(contracted: str, expanded: str):
     for i in range(3):
         for cap in [True, False]:
             input_str = contracted

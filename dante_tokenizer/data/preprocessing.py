@@ -55,6 +55,11 @@ constractions = {
     r"(?<![\w.])disso(?![$\w])": "de isso",
     r"(?<![\w.])desse(?![$\w])": "de esse",
     r"(?<![\w.])daquilo(?![$\w])": "de aquilo",
+    r"(?<![\w.])dela(?![$\w])": "de ela",
+    r"(?<![\w.])dele(?![$\w])": "de ele",
+    r"(?<![\w.])delas(?![$\w])": "de elas",
+    r"(?<![\w.])deles(?![$\w])": "de eles",
+    r"(?<![\w.])nisto(?![$\w])": "em isto",
     r"(?<![\w.])No(?![$\w])": "Em o",
     r"(?<![\w.])Na(?![$\w])": "Em a",
     r"(?<![\w.])Nos(?![$\w])": "Em os",
@@ -106,6 +111,11 @@ constractions = {
     r"(?<![\w.])Disso(?![$\w])": "De isso",
     r"(?<![\w.])Desse(?![$\w])": "De esse",
     r"(?<![\w.])Daquilo(?![$\w])": "De aquilo",
+    r"(?<![\w.])Dela(?![$\w])": "De ela",
+    r"(?<![\w.])Dele(?![$\w])": "De ele",
+    r"(?<![\w.])Delas(?![$\w])": "De elas",
+    r"(?<![\w.])Deles(?![$\w])": "De eles",
+    r"(?<![\w.])Nisto(?![$\w])": "Em isto",
 }
 
 def split_monetary_tokens(text: str) -> str:
