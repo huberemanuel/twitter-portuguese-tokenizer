@@ -6,7 +6,7 @@ from nltk import tokenize
 
 from dante_tokenizer.data.load import read_test_data
 from dante_tokenizer.evaluate import evaluate_dataset
-from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens
+from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens, normalize_text
 
 #region Regex definitions
 
@@ -190,6 +190,8 @@ class DanteTokenizer:
         """
         # Fix HTML character entities:
         text = _replace_html_entities(text)
+        # Normalize unicode text
+        text = normalize_text(text)
         # Expanding contractions
         text = expand_contractions(text)
         # Splitting monetary tokens

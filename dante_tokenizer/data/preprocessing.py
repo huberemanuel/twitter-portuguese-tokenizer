@@ -1,4 +1,6 @@
 import re
+import unicodedata
+
 
 # TODO: Consider Caps Lock cases.
 constractions = {
@@ -34,6 +36,25 @@ constractions = {
     r"(?<![\w.])numa(?![$\w])": "em uma",
     r"(?<![\w.])nuns(?![$\w])": "em uns",
     r"(?<![\w.])numas(?![$\w])": "em umas",
+    r"(?<![\w.])daqui(?![$\w])": "de aqui",
+    r"(?<![\w.])daquele(?![$\w])": "de aquele",
+    r"(?<![\w.])daquela(?![$\w])": "de aquela",
+    r"(?<![\w.])daqueles(?![$\w])": "de aqueles",
+    r"(?<![\w.])daquelas(?![$\w])": "de aquelas",
+    r"(?<![\w.])deste(?![$\w])": "de este",
+    r"(?<![\w.])desta(?![$\w])": "de esta",
+    r"(?<![\w.])destes(?![$\w])": "de estes",
+    r"(?<![\w.])destas(?![$\w])": "de estas",
+    r"(?<![\w.])desse(?![$\w])": "de esse",
+    r"(?<![\w.])dessa(?![$\w])": "de essa",
+    r"(?<![\w.])desses(?![$\w])": "de esses",
+    r"(?<![\w.])dessas(?![$\w])": "de essas",
+    r"(?<![\w.])daí(?![$\w])": "de aí",
+    r"(?<![\w.])donde(?![$\w])": "de onde",
+    r"(?<![\w.])disto(?![$\w])": "de isto",
+    r"(?<![\w.])disso(?![$\w])": "de isso",
+    r"(?<![\w.])desse(?![$\w])": "de esse",
+    r"(?<![\w.])daquilo(?![$\w])": "de aquilo",
     r"(?<![\w.])No(?![$\w])": "Em o",
     r"(?<![\w.])Na(?![$\w])": "Em a",
     r"(?<![\w.])Nos(?![$\w])": "Em os",
@@ -66,6 +87,25 @@ constractions = {
     r"(?<![\w.])Numa(?![$\w])": "Em uma",
     r"(?<![\w.])Nuns(?![$\w])": "Em uns",
     r"(?<![\w.])Numas(?![$\w])": "Em umas",
+    r"(?<![\w.])Daqui(?![$\w])": "De aqui",
+    r"(?<![\w.])Deste(?![$\w])": "De este",
+    r"(?<![\w.])Desta(?![$\w])": "De esta",
+    r"(?<![\w.])Destes(?![$\w])": "De estes",
+    r"(?<![\w.])Destas(?![$\w])": "De estas",
+    r"(?<![\w.])Desse(?![$\w])": "De esse",
+    r"(?<![\w.])Dessa(?![$\w])": "De essa",
+    r"(?<![\w.])Desses(?![$\w])": "De esses",
+    r"(?<![\w.])Dessas(?![$\w])": "De essas",
+    r"(?<![\w.])Daí(?![$\w])": "De aí",
+    r"(?<![\w.])Donde(?![$\w])": "De onde",
+    r"(?<![\w.])Daquele(?![$\w])": "De aquele",
+    r"(?<![\w.])Daquela(?![$\w])": "De aquela",
+    r"(?<![\w.])Daqueles(?![$\w])": "De aqueles",
+    r"(?<![\w.])Daquelas(?![$\w])": "De aquelas",
+    r"(?<![\w.])Disto(?![$\w])": "De isto",
+    r"(?<![\w.])Disso(?![$\w])": "De isso",
+    r"(?<![\w.])Desse(?![$\w])": "De esse",
+    r"(?<![\w.])Daquilo(?![$\w])": "De aquilo",
 }
 
 def split_monetary_tokens(text: str) -> str:
@@ -105,6 +145,22 @@ def expand_contractions(text: str) -> str:
         text = re.sub(contraction, constractions[contraction], text)
 
     return text
+
+def normalize_text(text:str) -> str:
+    """
+    Normalize text to NFC which represents chars as an unique code.
+
+    Parameters
+    ----------
+    text: str
+        Input text string.
+
+    Returns
+    -------
+    str:
+        Normalized text.
+    """
+    return unicodedata.normalize("NFC", text)
 
 def remove_quotes(text: str) -> str:
     """
