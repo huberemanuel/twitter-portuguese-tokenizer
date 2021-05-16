@@ -1,5 +1,7 @@
 import re
 
+import pandas as pd
+
 from dante_tokenizer.data.preprocessing import remove_quotes
 
 
@@ -87,12 +89,13 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
 
     # TODO: Fix this regex, Won't work with last line from conllu file.
     conllu_sentence_regex = r"(# newdoc[\s\S]*?[\r\n]{2})"
-    conllu_sentence_id_regex = r"sent_id = (dante_01_.*)$"
+    conllu_sentence_id_regex = r"sent_id = (dante_01_.*)"
     conllu_token_split_regex = r"^[\d]+\t([^\t]*)"
     csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
 
     csv_file = open(csv_path, "r")
     csv_data = csv_file.readlines()
+    df = pd.read_csv(csv_path)
     conllu_file = open(conllu_path, "r")
     conllu_data = conllu_file.read()
 
@@ -101,16 +104,14 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
 
         for matchNum, match in enumerate(matches, start=1):
             conllu_text = match.group(0)
-            id_matches = re.finditer(conllu_sentence_id_regex, conllu_text)
-            for id_match in id_matches:
-                sent_id = int(id_match.group(1)) 
+            sent_id = re.findall(conllu_sentence_id_regex, conllu_text)[0]
             tokens = []
             
-            token_matches = re.finditer(conllu_token_split_regex, conllu_text)
-            for token_match in token_matches:
-                tokens.append(token_match.group(1))
+            tokens = re.findall(conllu_token_split_regex, conllu_text, re.MULTILINE)
 
-            csv_line = csv_data[sent_id]
+            csv_line_idx = df[df["tweet_id"] == sent_id.split("_")[-1]].index[0] + 1
+            # print(sent_id, csv_line_idx)
+            csv_line = csv_data[csv_line_idx]
             csv_matches = re.findall(csv_split_regex, csv_line)
             sentence = csv_matches[1]
             sentence = remove_quotes(sentence)
