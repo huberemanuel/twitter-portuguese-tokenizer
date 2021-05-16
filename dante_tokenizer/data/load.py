@@ -1,6 +1,7 @@
 import re
 
-from dante_tokenizer.data.preprocessing import expand_contractions, remove_quotes, split_monetary_tokens
+from dante_tokenizer.data.preprocessing import remove_quotes
+
 
 def read_tokens_from_csv(csv_path: str, start_line:int = 1, n_sentences:int = -1) -> (list, list):
     """
@@ -48,8 +49,6 @@ def read_tokens_from_csv(csv_path: str, start_line:int = 1, n_sentences:int = -1
         sent_id = tokens_matches[0]
         sent_text = tokens_matches[1]
         sent_text = remove_quotes(sent_text)
-        sent_text = expand_contractions(sent_text)
-        sent_text = split_monetary_tokens(sent_text)
 
         sent_ids.append(sent_id)
         sent_texts.append(sent_text)
@@ -114,10 +113,7 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
             csv_line = csv_data[sent_id]
             csv_matches = re.findall(csv_split_regex, csv_line)
             sentence = csv_matches[1]
-            # Pre-processing text
             sentence = remove_quotes(sentence)
-            sentence = expand_contractions(sentence)
-            sentence = split_monetary_tokens(sentence)
 
             sent_ids.append(sent_id)
             sent_texts.append(sentence)
@@ -129,3 +125,4 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
         conllu_file.close()
 
     return sent_ids, sent_texts, sent_tokens
+

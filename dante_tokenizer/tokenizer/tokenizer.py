@@ -6,6 +6,7 @@ from nltk import tokenize
 
 from dante_tokenizer.data.load import read_test_data
 from dante_tokenizer.evaluate import evaluate_dataset
+from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens
 
 #region Regex definitions
 
@@ -189,6 +190,10 @@ class DanteTokenizer:
         """
         # Fix HTML character entities:
         text = _replace_html_entities(text)
+        # Expanding contractions
+        text = expand_contractions(text)
+        # Splitting monetary tokens
+        text = split_monetary_tokens(text)
         # Remove username handles
         if self.strip_handles:
             text = remove_handles(text)
