@@ -121,18 +121,17 @@ REGEXPS = (
     (?:\w)+\&(?:\w)+ # S&P BMF&Bovespa
     |
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
-    (?:\d+|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:\/|\.|\-)(?:\d+|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:(?:\/|\.|\-)[\d]+)?
+    \b(?:\d{1,2}|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho    )?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:\/|\.|\-)(?:\d{1,4}|(?:(?i)    jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set    (?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:(?:\/|\.|\-)[\d]+)?\b
+    |
+    (?:[\w]+\$) # R$ e U$
+    |
+    (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
     (?:[\w]+\/) # p/ e c/
     |
-    # R$ U$
-    (?:[\w]+\$)
-    |
     (?:%k|&lt) # %k and &lt
-    |
-    (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
     (?:[\w_]+)                     # Words without apostrophes or dashes.
     |
