@@ -1,6 +1,7 @@
 import argparse
 
 from dante_tokenizer.data.load import read_test_data
+from dante_tokenizer.data.preprocessing import remove_quotes
 from dante_tokenizer.evaluate import evaluate_dataset
 from dante_tokenizer.tokenizer import (
     predict_dante_tokenizer, 
@@ -19,6 +20,7 @@ def main():
     args = parser.parse_args()
 
     ids, sentences, true_tokens = read_test_data(args.csv_path, args.conllu_path)
+    sentences = list(map(remove_quotes, sentences))
     
     tokenizers = [
         ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
