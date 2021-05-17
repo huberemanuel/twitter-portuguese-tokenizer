@@ -1,3 +1,5 @@
+import os
+import glob
 import argparse
 
 from dante_tokenizer.data.load import read_test_data
@@ -19,7 +21,17 @@ def main():
                         help="Print detailed metrics and wrong sentence tokens")
     args = parser.parse_args()
 
-    ids, sentences, true_tokens = read_test_data(args.csv_path, args.conllu_path)
+    if os.path.isdir(args.conllu_path):
+        ids, sentences, true_tokens = [], [], []
+        for file_name in glob.glob(f"{args.conllu_path}/*.conllu"):
+            _ids, _sentences, _true_tokens = read_test_data(args.csv_path, file_name)
+            ids += _ids
+            sentences += _sentences
+            true_tokens += _true_tokens
+    else:
+        ids, sentences, true_tokens = read_test_data(args.csv_path, args.conllu_path)
+
+    # Preprocess input
     sentences = list(map(remove_quotes, sentences))
     
     tokenizers = [
