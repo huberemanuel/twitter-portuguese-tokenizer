@@ -3,6 +3,7 @@ import os
 
 from dante_tokenizer.tokenizer import DanteTokenizer
 from dante_tokenizer.data.load import read_tokens_from_csv
+from dante_tokenizer.data.preprocessing import remove_quotes, reconstruct_html_chars
 
 
 def tokenize_csv(csv_path: str, start_line:int, n_sentences: int) -> list:
@@ -23,6 +24,9 @@ def tokenize_csv(csv_path: str, start_line:int, n_sentences: int) -> list:
     """
     
     sent_ids, sent_texts = read_tokens_from_csv(csv_path, start_line, n_sentences)
+    # Preprocess input
+    sent_texts = list(map(remove_quotes, sent_texts))
+    sent_texts = list(map(reconstruct_html_chars, sent_texts))
     tokenizer = DanteTokenizer()
     sent_tokens = list(map(tokenizer.tokenize, sent_texts))
 
