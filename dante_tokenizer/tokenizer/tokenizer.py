@@ -26,6 +26,8 @@ EMOTICONS = r"""
       |
       (?:\b[oO].[oO]\b)          # O.o O.o o.o O.O
       |
+      (?:,\))
+      |
       (?:\*-\*)
       |
       <3                         # heart
@@ -116,6 +118,8 @@ REGEXPS = (
     |
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
+    \b(?:[a-zA-Z]\.){2,} # Acronyms like: J.B.S.A
+    |
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
     [\d\w]+(?:\/|\.|\-)[\d\w]+(?:(?:\/|\.|\-)[\d\w]+)?
     |
@@ -125,8 +129,6 @@ REGEXPS = (
     (?:[\w]+\$)
     |
     (?:%k|&lt) # %k and &lt
-    |
-    \b(?:[a-zA-Z]\.){2,} # Acronyms like: J.B.S.A
     |
     (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
