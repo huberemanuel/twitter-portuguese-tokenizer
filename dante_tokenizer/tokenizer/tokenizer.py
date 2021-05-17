@@ -116,12 +116,12 @@ REGEXPS = (
     |
     (?:\b[\w]{3,5}-?[\d]{1}\b) # JSB-3 Eletr6
     |
-    (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
-    |
     \b(?:[a-zA-Z]\.){2,} # Acronyms like: J.B.S.A
     |
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
-    [\d\w]+(?:\/|\.|\-)[\d\w]+(?:(?:\/|\.|\-)[\d\w]+)?
+    (?:\d+|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:\/|\.|\-)(?:\d+|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:(?:\/|\.|\-)[\d]+)?
+    |
+    (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
     (?:[\w]+\/) # p/ e c/
     |
