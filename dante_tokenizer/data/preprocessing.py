@@ -126,6 +126,30 @@ constractions = {
     r"(?<![\w.])Nelas(?![$\w])": "Em elas",
 }
 
+def reconstruct_html_chars(text: str) -> str:
+    """
+    Reconstrcut html chars from &gt, to &gt;
+
+    Paramters
+    ---------
+    text: str
+        Input text.
+
+    Returns
+    -------
+    str:
+        Processed str.
+    """
+
+    wrong_char_regex = r"(\&[\w\d]+),"
+    
+    if not "&" in text:
+        return text
+
+    text = re.sub(wrong_char_regex, r"\1;", text)
+
+    return text
+
 def split_monetary_tokens(text: str) -> str:
     """
     Split monetary text and numbers.

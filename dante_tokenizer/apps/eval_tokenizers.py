@@ -3,7 +3,7 @@ import glob
 import argparse
 
 from dante_tokenizer.data.load import read_test_data
-from dante_tokenizer.data.preprocessing import remove_quotes
+from dante_tokenizer.data.preprocessing import remove_quotes, reconstruct_html_chars
 from dante_tokenizer.evaluate import evaluate_dataset
 from dante_tokenizer.tokenizer import (
     predict_dante_tokenizer, 
@@ -33,6 +33,7 @@ def main():
 
     # Preprocess input
     sentences = list(map(remove_quotes, sentences))
+    sentences = list(map(reconstruct_html_chars, sentences))
     
     tokenizers = [
         ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
