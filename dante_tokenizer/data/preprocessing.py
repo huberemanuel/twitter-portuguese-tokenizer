@@ -60,6 +60,10 @@ constractions = {
     r"(?<![\w.])delas(?![$\w])": "de elas",
     r"(?<![\w.])deles(?![$\w])": "de eles",
     r"(?<![\w.])nisto(?![$\w])": "em isto",
+    r"(?<![\w.])nele(?![$\w])": "em ele",
+    r"(?<![\w.])nela(?![$\w])": "em ela",
+    r"(?<![\w.])neles(?![$\w])": "em eles",
+    r"(?<![\w.])nelas(?![$\w])": "em elas",
     r"(?<![\w.])No(?![$\w])": "Em o",
     r"(?<![\w.])Na(?![$\w])": "Em a",
     r"(?<![\w.])Nos(?![$\w])": "Em os",
@@ -116,6 +120,10 @@ constractions = {
     r"(?<![\w.])Delas(?![$\w])": "De elas",
     r"(?<![\w.])Deles(?![$\w])": "De eles",
     r"(?<![\w.])Nisto(?![$\w])": "Em isto",
+    r"(?<![\w.])Nele(?![$\w])": "Em ele",
+    r"(?<![\w.])Nela(?![$\w])": "Em ela",
+    r"(?<![\w.])Neles(?![$\w])": "Em eles",
+    r"(?<![\w.])Nelas(?![$\w])": "Em elas",
 }
 
 def split_monetary_tokens(text: str) -> str:

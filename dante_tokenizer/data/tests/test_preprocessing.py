@@ -56,6 +56,10 @@ from dante_tokenizer.data.preprocessing import expand_contractions
     ("delas", "de elas"),
     ("deles", "de eles"),
     ("nisto", "em isto"),
+    ("nele", "em ele"),
+    ("nela", "em ela"),
+    ("neles", "em eles"),
+    ("nelas", "em elas"),
 ])
 def test_contraction(contracted: str, expanded: str):
     for i in range(3):
