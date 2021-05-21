@@ -22,6 +22,12 @@ from dante_tokenizer import DanteTokenizer
     ("@user123", "@user123"),
     ("#hashtag", "#hashtag"),
     ("%k", "%k"),
+    ("1mil", "1 mil"),
+    ("1milhão", "1 milhão"),
+    ("1bilhão", "1 bilhão"),
+    ("1trilhão", "1 trilhão"),
+    ("1bi", "1 bi"),
+    ("1tri", "1 tri"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()

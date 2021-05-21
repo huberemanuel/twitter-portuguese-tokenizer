@@ -165,7 +165,7 @@ def split_monetary_tokens(text: str) -> str:
     str:
         Processed sentence.
     """
-    text = re.sub(r"(\d)((?i)milh[õoaã][oe]s?|mil)", r"\g<1> \g<2>",text)
+    text = re.sub(r"(\d)((?i)(?:m|tr|b)(?:ilh)?[õoaã]?[oe]?s?|mil)", r"\g<1> \g<2>",text)
     return text
 
 def expand_contractions(text: str) -> str:
@@ -234,3 +234,4 @@ def remove_quotes(text: str) -> str:
         if text.count(quote_mark) % 2 != 0:
             text = text.replace(quote_mark, "", 1)
     return text
+
