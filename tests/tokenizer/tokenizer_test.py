@@ -29,6 +29,8 @@ from dante_tokenizer import DanteTokenizer
     ("1trilhão", "1 trilhão"),
     ("1bi", "1 bi"),
     ("1tri", "1 tri"),
+    ("p/a", "p/a"),
+    ("P/a", "P/a"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()

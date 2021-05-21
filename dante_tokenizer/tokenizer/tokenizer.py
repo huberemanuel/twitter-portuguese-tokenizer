@@ -129,7 +129,7 @@ REGEXPS = (
     |
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
-    (?:[\w]+\/) # p/ e c/
+    (?:[\w\d]+\/[\w\d]?) # p/ e c/
     |
     (?:%k|&lt) # %k and &lt
     |
