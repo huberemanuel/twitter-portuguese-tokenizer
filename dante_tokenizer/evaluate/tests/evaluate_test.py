@@ -63,3 +63,4 @@ def test_evaluate_sentence():
                              ["alta", "no", "estocástico", "%k"]) == (4, 0, 0)
     assert evaluate_sentence(["alta", "no", "estocástico", "%", "k"],
                              ["alta", "no", "estocástico", "%k"]) == (3, 2, 1)
+
