@@ -34,14 +34,20 @@ from dante_tokenizer import DanteTokenizer
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()
+    raw = raw_str
+    expected = expected_str
 
-    for add_space in [False, 0, -1]:
-        if add_space:
-            if add_space == 0:
-                raw_str = " " + raw_str
-            elif add_space == -1:
-                raw_str = raw_str + " "
-        tokenized = dt.tokenize(raw_str)
+    for upper_case in [False, True]:
+        for add_space in [False, 0, -1]:
+            if add_space:
+                if add_space == 0:
+                    raw = " " + raw_str
+                elif add_space == -1:
+                    raw = raw_str + " "
+            if upper_case:
+                raw = raw.upper()
+                expected = expected.upper()
+            tokenized = dt.tokenize(raw)
 
-        assert " ".join(tokenized) == expected_str
+            assert " ".join(tokenized) == expected
 
