@@ -14,7 +14,6 @@ from dante_tokenizer.data.preprocessing import expand_contractions
     ("das", "de as"),
     ("ao", "a o"),
     ("aos", "a os"),
-    ("à", "a a"),
     ("às", "a as"),
     ("pra", "para a"),
     ("pro", "para o"),
@@ -73,4 +72,9 @@ def test_contraction(contracted: str, expanded: str):
                 input_str += f" {input_str}" * i
                 expected_str += f" {expected_str}" * i
             assert expand_contractions(input_str) == expected_str
+            
+            if not cap:
+                input_str = input_str.upper()
+                expected_str = expected_str.upper()
+                assert expand_contractions(input_str) == expected_str
 
