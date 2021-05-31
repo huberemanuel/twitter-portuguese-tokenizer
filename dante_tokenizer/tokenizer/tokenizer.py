@@ -16,10 +16,10 @@ EMOTICONS = r"""
     (?:
       [<>]?
       [:;=8]                     # eyes
-      [\-o\*\']?                 # optional nose
-      [\)\]\(\[dDpP/\:\}\{@\|\\] # mouth
+      [\-o\*\']*                 # optional nose
+      [\)\]+\(\[dDpPoO/\:\}\{@\|\\]+ # mouth
       |
-      [\)\]\(\[dDpP/\:\}\{@\|\\] # mouth
+      [\)\]+\(\[dDpPoO/\:\}\{@\|\\]+ # mouth
       [\-o\*\']?                 # optional nose
       [:;=8]                     # eyes
       [<>]?
@@ -28,7 +28,7 @@ EMOTICONS = r"""
       |
       (?:,\))
       |
-      (?:\*(?:-|\.)\*)
+      (?:\*+(?:-|\.)\*+)
       |
       <3                         # heart
     )"""
