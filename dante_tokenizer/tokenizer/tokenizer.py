@@ -127,6 +127,8 @@ REGEXPS = (
     |
     (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
+    (?:(?i)ex-[\w]+) # ex-dividendos, etc.
+    |
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
     (?:[\w\d]+\/[\w\d]?) # p/ e c/

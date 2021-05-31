@@ -31,6 +31,9 @@ from dante_tokenizer import DanteTokenizer
     ("1tri", "1 tri"),
     ("p/a", "p/a"),
     ("P/a", "P/a"),
+    ("ex-teste", "ex-teste"),
+    ("ex-LLX", "ex-LLX"),
+    ("ex-dividendos", "ex-dividendos"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()
