@@ -1,7 +1,20 @@
 import pytest
 
-from dante_tokenizer.data.preprocessing import expand_contractions
+from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens
 
+
+@pytest.mark.parametrize(("original", "expected"), [
+    ("Sr. K tem 10milhões", "Sr. K tem 10 milhões"),
+    ("Sr. K tem 10mi", "Sr. K tem 10 mi"),
+    ("Sr. K tem 10M", "Sr. K tem 10 M"),
+    ("Sr. K tem 10m", "Sr. K tem 10 m"),
+    ("Sr. K tem 10bilhões", "Sr. K tem 10 bilhões"),
+    ("Sr. K tem 10bi", "Sr. K tem 10 bi"),
+    ("Sr. K tem 10B", "Sr. K tem 10 B"),
+    ("Sr. K tem 10b", "Sr. K tem 10 b"),
+])
+def test_split_monetary_tokens(original: str, expected: str):
+    assert split_monetary_tokens(original) == expected
 
 @pytest.mark.parametrize(("contracted", "expanded"), [
     ("no", "em o"),
