@@ -39,6 +39,7 @@ from dante_tokenizer import DanteTokenizer
     ("ex-teste", "ex-teste"),
     ("ex-LLX", "ex-LLX"),
     ("ex-dividendos", "ex-dividendos"),
+    ("15min", "15min"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()

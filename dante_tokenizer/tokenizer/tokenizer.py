@@ -125,7 +125,7 @@ REGEXPS = (
     |
     (?:[\w]+\$) # R$ e U$
     |
-    (?:(?:\d+[,/.:-])*\d+[+\-]?)  # Numbers, including fractions, decimals.
+    (?:(?:\d+[,/.:-])+\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
     (?:(?i)ex-[\w]+) # ex-dividendos, etc.
     |

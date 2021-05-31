@@ -79,7 +79,7 @@ def split_monetary_tokens(text: str) -> str:
     str:
         Processed sentence.
     """
-    text = re.sub(r"(\d)((?i)(?:m|tr|b)(?:ilh)?[õoaã]?[oe]?s?|mil)", r"\g<1> \g<2>",text)
+    text = re.sub(r"(\d)((?i)(?:mi?|tri?|bi?)(?:ilh)?[õoaã]?[oe]?s?|mil)\b", r"\g<1> \g<2>",text)
     return text
 
 def replace_keep_case(word, replacement, text):
