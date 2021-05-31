@@ -37,6 +37,7 @@ contractions = {
     r"(?<![\w.])nele(s)?(?![$\w])": r"em ele\g<1>",
     r"(?<![\w.])nela(s)?(?![$\w])": r"em ela\g<1>",
     r"(?<![\w.])aonde(?![$\w])": r"a onde",
+    r"(?<![\w.])contigo(?![$\w])": r"com ti",
 }
 
 def reconstruct_html_chars(text: str) -> str:

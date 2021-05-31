@@ -57,6 +57,7 @@ from dante_tokenizer.data.preprocessing import expand_contractions
     ("nelas", "em elas"),
     ("aonde", "a onde"),
     ("Estou testando aonde", "Estou testando a onde"),
+    ("contigo estou", "com ti estou"),
 ])
 def test_contraction(contracted: str, expanded: str):
     for i in range(3):
