@@ -114,18 +114,18 @@ REGEXPS = (
     r"""
     (?:\b[\w]{4}-[\w]{1,2}\b) # lren-nm elet-n1
     |
-    (?:\b[\w]{3,5}-?[\d]{1}\b) # JSB-3 Eletr6
+    (?:\b[a-zA-Z]{3,5}-?[\d]{1}\b) # JSB-3 Eletr6
     |
     \b(?:[a-zA-Z]\.){2,} # Acronyms like: J.B.S.A
     |
     (?:\w)+\&(?:\w)+ # S&P BMF&Bovespa
     |
     # Datas nos formatos DD/MM/AAAA, DD/MM, DD-MM-AAAA, DD.MM.AAAA
-    \b(?:\d{1,2}|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho    )?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:\/|\.|\-)(?:\d{1,4}|(?:(?i)    jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set    (?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:(?:\/|\.|\-)[\d]+)?\b
+    \b(?:\d{1,2}|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:\/|\.|\-)(?:\d{1,4}|(?:(?i)jan(?:eiro)?|fev(?:ereiro)?|mar(?:ço)?|abr(?:il)?|mai(?:o)?|jun(?:ho)?|jul(?:ho)?|ago(?:sto)?|set(?:embro)?|out(?:ubro)?|nov(?:embro)?|dez(?:embro)?))(?:(?:\/|\.|\-)[\d]+)?(?=\ |$|\.)
     |
     (?:[\w]+\$) # R$ e U$
     |
-    (?:\d+[,/.:-]\d+[+\-]?)  # Numbers, including fractions, decimals.
+    (?:(?:\d+[,/.:-])*\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
     (?:(?i)ex-[\w]+) # ex-dividendos, etc.
     |

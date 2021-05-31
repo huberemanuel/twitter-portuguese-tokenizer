@@ -5,6 +5,8 @@ from dante_tokenizer import DanteTokenizer
 
 @pytest.mark.parametrize(("raw_str", "expected_str"), [
     ("R$32,10", "R$ 32,10"),
+    ("R$4.750,22", "R$ 4.750,22"),
+    ("R$ 4.750,22", "R$ 4.750,22"),
     ("BMF&Bovespa", "BMF&Bovespa"),
     ("OIBR4", "OIBR4"),
     ("oibr4", "oibr4"),
