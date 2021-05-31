@@ -5,7 +5,7 @@ import pandas as pd
 from dante_tokenizer.data.preprocessing import remove_quotes
 
 
-def read_tokens_from_csv(csv_path: str, start_line:int = 1, n_sentences:int = -1) -> (list, list):
+def read_tokens_from_csv(csv_path: str, start_line:int = 0, n_sentences:int = -1) -> (list, list):
     """
     Read csv file and return tokens. The first colulmn should be 
     the tweet_id and the second the sentence text.
@@ -31,31 +31,24 @@ def read_tokens_from_csv(csv_path: str, start_line:int = 1, n_sentences:int = -1
     # Unprocessable parameters
     if n_sentences < -1:
         raise ValueError("n_sentences must be a positive or equal to -1")
-    elif start_line <= 0:
+    elif start_line < 0:
         raise ValueError("start_line must be greater than 0")
 
-    csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
-
-    csv_file = open(csv_path, "r")
-    csv_data = csv_file.readlines()
+    csv_df = pd.read_csv(csv_path)
 
     if n_sentences == -1:
-        n_sentences = len(csv_data)
+        n_sentences = csv_df.shape[0]
     else:
-        n_sentences = min(len(csv_data), n_sentences + start_line)
+        n_sentences = min(csv_df.shape[0], n_sentences + start_line)
 
-    for csv_line in csv_data[start_line:n_sentences]:
+    for index, row in csv_df.iloc[start_line:n_sentences,:].iterrows():
 
-        tokens_matches = re.findall(csv_split_regex, csv_line)
-
-        sent_id = tokens_matches[0]
-        sent_text = tokens_matches[1]
+        sent_id = row["tweet_id"]
+        sent_text = row["text"]
         sent_text = remove_quotes(sent_text)
 
         sent_ids.append(sent_id)
         sent_texts.append(sent_text)
-
-    csv_file.close()
 
     return sent_ids, sent_texts
 
