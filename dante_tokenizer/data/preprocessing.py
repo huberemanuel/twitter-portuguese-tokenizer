@@ -4,39 +4,38 @@ import unicodedata
 
 # TODO: Consider Caps Lock cases.
 contractions = {
-    r"(?<![\w.])no(s)?(?![$\w])": r"em o\1",
-    r"(?<![\w.])na(s)?(?![$\w])": r"em a\1",
-    r"(?<![\w.])da(s)?(?![$\w])": r"de a\1",
-    r"(?<![\w.])do(s)?(?![$\w])": r"de o\1",
-    r"(?<![\w.])ao(s)?(?![$\w])": r"a o\1",
-    r"(?<![\w.])à(s)?(?![$\w])": r"a a\1",
-    r"(?<![\w.])pela(s)?(?![$\w])": r"por a\1",
-    r"(?<![\w.])pelo(s)?(?![$\w])": r"por o\1",
-    r"(?<![\w.])nesta(s)?(?![$\w])": r"em esta\1",
-    r"(?<![\w.])neste(s)?(?![$\w])": r"em este\1",
-    r"(?<![\w.])nessa(s)?(?![$\w])": r"em essa\1",
-    r"(?<![\w.])nesse(s)?(?![$\w])": r"em esse\1",
+    r"(?<![\w.])no(s)?(?![$\w])": r"em o\g<1>",
+    r"(?<![\w.])na(s)?(?![$\w])": r"em a\g<1>",
+    r"(?<![\w.])da(s)?(?![$\w])": r"de a\g<1>",
+    r"(?<![\w.])do(s)?(?![$\w])": r"de o\g<1>",
+    r"(?<![\w.])ao(s)?(?![$\w])": r"a o\g<1>",
+    r"(?<![\w.])à(s)?(?![$\w])": r"a a\g<1>",
+    r"(?<![\w.])pela(s)?(?![$\w])": r"por a\g<1>",
+    r"(?<![\w.])pelo(s)?(?![$\w])": r"por o\g<1>",
+    r"(?<![\w.])nesta(s)?(?![$\w])": r"em esta\g<1>",
+    r"(?<![\w.])neste(s)?(?![$\w])": r"em este\g<1>",
+    r"(?<![\w.])nessa(s)?(?![$\w])": r"em essa\g<1>",
+    r"(?<![\w.])nesse(s)?(?![$\w])": r"em esse\g<1>",
     r"(?<![\w.])num(?![$\w])": r"em um",
-    r"(?<![\w.])nuns?(?![$\w])": r"em uns",
-    r"(?<![\w.])numa(s)?(?![$\w])": r"em uma\1",
+    r"(?<![\w.])nuns(?![$\w])": r"em uns",
+    r"(?<![\w.])numa(s)?(?![$\w])": r"em uma\g<1>",
     r"(?<![\w.])daqui(?![$\w])": r"de aqui",
-    r"(?<![\w.])daquele(s)?(?![$\w])": r"de aquele\1",
-    r"(?<![\w.])daquela(s)?(?![$\w])": r"de aquela\1",
-    r"(?<![\w.])deste(s)?(?![$\w])": r"de este\1",
-    r"(?<![\w.])desta(s)?(?![$\w])": r"de esta\1",
-    r"(?<![\w.])desse(s)?(?![$\w])": r"de esse\1",
-    r"(?<![\w.])dessa(s)?(?![$\w])": r"de essa\1",
+    r"(?<![\w.])daquele(s)?(?![$\w])": r"de aquele\g<1>",
+    r"(?<![\w.])daquela(s)?(?![$\w])": r"de aquela\g<1>",
+    r"(?<![\w.])deste(s)?(?![$\w])": r"de este\g<1>",
+    r"(?<![\w.])desta(s)?(?![$\w])": r"de esta\g<1>",
+    r"(?<![\w.])desse(s)?(?![$\w])": r"de esse\g<1>",
+    r"(?<![\w.])dessa(s)?(?![$\w])": r"de essa\g<1>",
     r"(?<![\w.])daí(?![$\w])": r"de aí",
     r"(?<![\w.])donde(?![$\w])": r"de onde",
     r"(?<![\w.])disto(?![$\w])": r"de isto",
     r"(?<![\w.])disso(?![$\w])": r"de isso",
-    r"(?<![\w.])desse(?![$\w])": r"de esse",
     r"(?<![\w.])daquilo(?![$\w])": r"de aquilo",
-    r"(?<![\w.])dela(s)?(?![$\w])": r"de ela\1",
-    r"(?<![\w.])dele(s)?(?![$\w])": r"de ele\1",
+    r"(?<![\w.])dela(s)?(?![$\w])": r"de ela\g<1>",
+    r"(?<![\w.])dele(s)?(?![$\w])": r"de ele\g<1>",
     r"(?<![\w.])nisto(?![$\w])": r"em isto",
-    r"(?<![\w.])nele(s)?(?![$\w])": r"em ele\1",
-    r"(?<![\w.])nela(s)?(?![$\w])": r"em ela\1",
+    r"(?<![\w.])nele(s)?(?![$\w])": r"em ele\g<1>",
+    r"(?<![\w.])nela(s)?(?![$\w])": r"em ela\g<1>",
     r"(?<![\w.])aonde(?![$\w])": r"a onde",
 }
 
@@ -82,6 +81,34 @@ def split_monetary_tokens(text: str) -> str:
     text = re.sub(r"(\d)((?i)(?:m|tr|b)(?:ilh)?[õoaã]?[oe]?s?|mil)", r"\g<1> \g<2>",text)
     return text
 
+def replace_keep_case(word, replacement, text):
+    """
+    Custom function for replace keeping the original case.
+
+    Parameters
+    ----------
+    word: str
+        Text to be replaced.
+    replacement: str
+        String to replace word.
+    text:
+        Text to be processed.
+
+    Returns
+    -------
+    str:
+        Processed string
+    """
+    def func(match):
+        g = match.group()
+        repl = match.expand(replacement)
+        if g.islower(): return repl.lower()
+        if g.istitle(): return repl.capitalize()
+        if g.isupper(): return repl.upper()
+        return repl
+
+    return re.sub(word, func, text, flags=re.I)
+
 def expand_contractions(text: str) -> str:
     """
     Replace contractions to their based form.
@@ -91,7 +118,7 @@ def expand_contractions(text: str) -> str:
     text: str
         Text that may contain contractions.
     
-    Retunrs
+    Returns
     -------
     str:
         Text with expanded contractions.
@@ -99,12 +126,7 @@ def expand_contractions(text: str) -> str:
 
     for contraction in contractions.keys():
         replace_str = contractions[contraction]
-        if text.isupper():
-            replace_str = replace_str.upper()
-        elif sum([x.isupper() for x in text]) > 0:
-            # Solves capitalized strings, but not cases such nO or nElAs
-            replace_str = replace_str.capitalize()
-        text = re.sub(contraction, replace_str, text, flags=re.IGNORECASE)
+        text = replace_keep_case(contraction, replace_str, text)
 
     return text
 
