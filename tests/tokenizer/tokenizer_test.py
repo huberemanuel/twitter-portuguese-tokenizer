@@ -7,6 +7,7 @@ from dante_tokenizer import DanteTokenizer
     ("R$32,10", "R$ 32,10"),
     ("R$4.750,22", "R$ 4.750,22"),
     ("R$ 4.750,22", "R$ 4.750,22"),
+    ("123123123123123,123123123123", "123123123123123,123123123123"),
     ("BMF&Bovespa", "BMF&Bovespa"),
     ("OIBR4", "OIBR4"),
     ("oibr4", "oibr4"),

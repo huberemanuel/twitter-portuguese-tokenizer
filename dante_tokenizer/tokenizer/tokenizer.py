@@ -83,21 +83,21 @@ URLS = r"""			# Capture 1: entire matched URL
 REGEXPS = (
     URLS,
     # Phone numbers:
-    r"""
-    (?:
-      (?:            # (international)
-        \+?[01]
-        [ *\-.\)]*
-      )?
-      (?:            # (area code)
-        [\(]?
-        \d{3}
-        [ *\-.\)]*
-      )?
-      \d{3}          # exchange
-      [ *\-.\)]*
-      \d{4}          # base
-    )""",
+    #r"""
+    #(?:
+    #  (?:            # (international)
+    #    \+?[01]
+    #    [ *\-.\)]*
+    #  )?
+    #  (?:            # (area code)
+    #    [\(]?
+    #    \d{3}
+    #    [ *\-.\)]*
+    #  )?
+    #  \d{3}          # exchange
+    #  [ *\-.\)]*
+    #  \d{4}          # base
+    #)""",
     # ASCII Emoticons
     EMOTICONS,
     # HTML tags:
