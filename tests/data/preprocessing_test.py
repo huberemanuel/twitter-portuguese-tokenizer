@@ -15,10 +15,6 @@ from dante_tokenizer.data.preprocessing import expand_contractions
     ("ao", "a o"),
     ("aos", "a os"),
     ("às", "a as"),
-    ("pra", "para a"),
-    ("pro", "para o"),
-    ("pras", "para as"),
-    ("pros", "para os"),
     ("pela", "por a"),
     ("pelo", "por o"),
     ("pelas", "por as"),
@@ -59,6 +55,7 @@ from dante_tokenizer.data.preprocessing import expand_contractions
     ("nela", "em ela"),
     ("neles", "em eles"),
     ("nelas", "em elas"),
+    ("aonde", "a onde"),
 ])
 def test_contraction(contracted: str, expanded: str):
     for i in range(3):

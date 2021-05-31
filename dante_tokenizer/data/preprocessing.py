@@ -10,8 +10,6 @@ contractions = {
     r"(?<![\w.])do(s)?(?![$\w])": r"de o\1",
     r"(?<![\w.])ao(s)?(?![$\w])": r"a o\1",
     r"(?<![\w.])à(s)?(?![$\w])": r"a a\1",
-    r"(?<![\w.])pra(s)?(?![$\w])": r"para a\1",
-    r"(?<![\w.])pro(s)?(?![$\w])": r"para o\1",
     r"(?<![\w.])pela(s)?(?![$\w])": r"por a\1",
     r"(?<![\w.])pelo(s)?(?![$\w])": r"por o\1",
     r"(?<![\w.])nesta(s)?(?![$\w])": r"em esta\1",
@@ -39,6 +37,7 @@ contractions = {
     r"(?<![\w.])nisto(?![$\w])": r"em isto",
     r"(?<![\w.])nele(s)?(?![$\w])": r"em ele\1",
     r"(?<![\w.])nela(s)?(?![$\w])": r"em ela\1",
+    r"(?<![\w.])aonde(?![$\w])": r"a onde",
 }
 
 def reconstruct_html_chars(text: str) -> str:
