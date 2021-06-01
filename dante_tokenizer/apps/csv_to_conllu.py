@@ -59,6 +59,7 @@ def tokens_to_conllu(doc_name: str, sent_ids: list, sent_tokens: list,
         conllu_text.append(f"# newdoc id = {doc_name}\n")
         conllu_text.append("# newpar\n")
         conllu_text.append(f"# sent_id = dante_01_{sent_id}\n")
+        sent_text = sent_text.replace("\n", " ")
         conllu_text.append(f"# text = {sent_text}\n")
 
         for token_id, token in enumerate(sent_token, start=1):
