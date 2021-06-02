@@ -6,7 +6,7 @@ from nltk import tokenize
 
 from dante_tokenizer.data.load import read_test_data
 from dante_tokenizer.evaluate import evaluate_dataset
-from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens, normalize_text
+from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens, normalize_text, split_enclisis
 
 #region Regex definitions
 
@@ -201,6 +201,8 @@ class DanteTokenizer:
         text = expand_contractions(text)
         # Splitting monetary tokens
         text = split_monetary_tokens(text)
+        # Splitting enclisis
+        text = split_enclisis(text)
         # Remove username handles
         if self.strip_handles:
             text = remove_handles(text)

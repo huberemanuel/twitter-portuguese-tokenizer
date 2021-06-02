@@ -39,6 +39,13 @@ contractions = {
     r"(?<![\w.])aonde(?![$\w])": r"a onde",
     r"(?<![\w.])contigo(?![$\w])": r"com ti",
 }
+enclisis = ['me', 'te', 'se', 'lhe', 'o', 'a', 'nos', 'vos', 'lhes', 'os', 'as', 'lo', 'la', 'los', 'las']
+
+
+def split_enclisis(text: str):
+    for enc in enclisis:
+        text = re.sub(r"\b(\w+)-("+enc+r")\b", r"\g<1> - \g<2>", text, flags=re.I)
+    return text
 
 def reconstruct_html_chars(text: str) -> str:
     """

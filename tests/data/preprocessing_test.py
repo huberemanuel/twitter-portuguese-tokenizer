@@ -1,7 +1,28 @@
 import pytest
 
-from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens
+from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens, split_enclisis
 
+
+@pytest.mark.parametrize(("original", "expected"), [
+    ("perguntou-me", "perguntou - me"),
+    ("perguntou-lhe", "perguntou - lhe"),
+    ("perguntou-se", "perguntou - se"),
+    ("perguntou-te", "perguntou - te"),
+    ("perguntou-o", "perguntou - o"),
+    ("perguntou-a", "perguntou - a"),
+    ("perguntou-nos", "perguntou - nos"),
+    ("perguntou-vos", "perguntou - vos"),
+    ("perguntou-lhes", "perguntou - lhes"),
+    ("perguntou-os", "perguntou - os"),
+    ("perguntou-as", "perguntou - as"),
+    ("perguntou-lo", "perguntou - lo"),
+    ("perguntou-la", "perguntou - la"),
+    ("perguntou-los", "perguntou - los"),
+    ("perguntou-las", "perguntou - las"),
+
+])
+def test_split_enclisis(original: str, expected: str):
+    assert split_enclisis(original) == expected
 
 @pytest.mark.parametrize(("original", "expected"), [
     ("Sr. K tem 10milhões", "Sr. K tem 10 milhões"),
