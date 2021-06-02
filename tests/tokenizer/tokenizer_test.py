@@ -45,6 +45,15 @@ from dante_tokenizer import DanteTokenizer
     ("quarta-feira", "quarta-feira"),
     ("quinta-feira", "quinta-feira"),
     ("sexta-feira", "sexta-feira"),
+    ("pré-sal", "pré-sal"),
+    ("pre-sal", "pre-sal"),
+    ("pós-sal", "pós-sal"),
+    ("pos-sal", "pos-sal"),
+    ("P-55", "P-55"),
+    ("BS-4", "BS-4"),
+    ("Mega-sena", "Mega-sena"),
+    ("day-trade", "day-trade"),
+    ("ações-gráfico", "ações-gráfico"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()

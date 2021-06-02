@@ -112,7 +112,7 @@ REGEXPS = (
     r"""[\w.+-]+@[\w-]+\.(?:[\w-]\.?)+[\w-]""",
     # Remaining word types:
     r"""
-    \b(?:(?i)segunda|terça|quarta|quinta|sexta|2a|3a|4a|5a)(?:-feira)?\b # Handling weekdays
+    (?:(?i)segunda|terça|quarta|quinta|sexta|2a|3a|4a|5a)(?:-feira)? # Handling weekdays
     |
     (?:\b[\w]{4}-[\w]{1,2}\b) # lren-nm elet-n1
     |
@@ -129,7 +129,7 @@ REGEXPS = (
     |
     (?:(?:\d+[,/.:-])+\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
-    (?:(?i)ex-[\w]+) # ex-dividendos, etc.
+    (?:(?i)ex|BS|P|pr[ée]|p[óo]s|mega|a[çc][õo]es|day)-[\w]+ # ex-dividendos, etc.
     |
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
