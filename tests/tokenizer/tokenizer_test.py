@@ -40,6 +40,11 @@ from dante_tokenizer import DanteTokenizer
     ("ex-LLX", "ex-LLX"),
     ("ex-dividendos", "ex-dividendos"),
     ("15min", "15min"),
+    ("segunda-feira", "segunda-feira"),
+    ("terça-feira", "terça-feira"),
+    ("quarta-feira", "quarta-feira"),
+    ("quinta-feira", "quinta-feira"),
+    ("sexta-feira", "sexta-feira"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()

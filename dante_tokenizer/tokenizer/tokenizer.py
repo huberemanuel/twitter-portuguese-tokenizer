@@ -112,6 +112,8 @@ REGEXPS = (
     r"""[\w.+-]+@[\w-]+\.(?:[\w-]\.?)+[\w-]""",
     # Remaining word types:
     r"""
+    \b(?:(?i)segunda|terça|quarta|quinta|sexta|2a|3a|4a|5a)(?:-feira)?\b # Handling weekdays
+    |
     (?:\b[\w]{4}-[\w]{1,2}\b) # lren-nm elet-n1
     |
     (?:\b[a-zA-Z]{3,5}-?[\d]{1}\b) # JSB-3 Eletr6
