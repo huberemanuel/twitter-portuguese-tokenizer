@@ -14,9 +14,7 @@ from dante_tokenizer import DanteTokenizer
     ("p/", "p/"),
     (":)", ":)"),
     (":)))", ":)))"),
-    (":(((", ":((("),
-    ("=)))", "=)))"),
-    ("=(((", "=((("),
+    (":(((", ":((("), ("=)))", "=)))"), ("=(((", "=((("),
     ("*.*", "*.*"),
     ("***.***", "***.***"),
     ("02/03/2020", "02/03/2020"),
@@ -54,6 +52,7 @@ from dante_tokenizer import DanteTokenizer
     ("Mega-sena", "Mega-sena"),
     ("day-trade", "day-trade"),
     ("ações-gráfico", "ações-gráfico"),
+    ("Ago/e ago/e", "Ago/e ago/e"),
 ])
 def test_tokenizer(raw_str: str, expected_str: str):
     dt = DanteTokenizer()
