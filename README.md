@@ -22,7 +22,7 @@ O pacote será adicionado ao seu ambiente python. Para tokenizar textos, basta s
 ['A', 'DANT3', 'está', 'em', 'alta', '!']
 ```
 
-O método `tokenize` irá retornar uma lista de strings contendo os respectivos tokens detectados. 
+O método `tokenize` irá retornar uma lista de strings contendo os respectivos tokens detectados. Outros exemplos estão disponíveis na pasta `notebooks`.
 
 # DanteTokenizer
 
