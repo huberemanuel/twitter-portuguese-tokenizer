@@ -5,6 +5,27 @@ import pandas as pd
 from dante_tokenizer.data.preprocessing import remove_quotes
 
 
+def read_tokens_from_txt(txt_path: str, header: bool=False) -> (list, list):
+    """
+    Read txt file and return tokens. The txt file should contain a tokenized sentences
+    for each line, were tokens are separated by spaces.
+
+    txt_path: str
+        Path to input txt_file
+    header: bool
+        Whetiher the file first line is a header or not.
+
+    Returns
+    -------
+    (list, list):
+        Sentence id (row number), list of tokens
+    """
+    with open(txt_path, "r") as txt_f:
+        data = txt_f.readlines()
+        if len(data) < 1 or len(data) < 2 and header:
+            return []
+        return list(range(len(data)))[1:], data[1:]
+
 def read_tokens_from_csv(csv_path: str, start_line:int = 0, n_sentences:int = -1) -> (list, list):
     """
     Read csv file and return tokens. The first colulmn should be 
