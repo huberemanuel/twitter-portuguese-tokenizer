@@ -92,6 +92,7 @@ def test_split_monetary_tokens(original: str, expected: str):
     ("aonde", "a onde"),
     ("Estou testando aonde", "Estou testando a onde"),
     ("contigo estou", "com ti estou"),
+    ("né", "não é"),
 ])
 def test_contraction(contracted: str, expanded: str):
     for i in range(3):

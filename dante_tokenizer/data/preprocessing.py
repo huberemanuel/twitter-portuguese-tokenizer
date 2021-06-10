@@ -38,6 +38,7 @@ contractions = {
     r"(?<![\w.])nela(s)?(?![$\w])": r"em ela\g<1>",
     r"(?<![\w.])aonde(?![$\w])": r"a onde",
     r"(?<![\w.])contigo(?![$\w])": r"com ti",
+    r"(?<![\w.])né(?![$\w])": r"não é",
 }
 enclisis = ['me', 'te', 'se', 'lhe', 'o', 'a', 'nos', 'vos', 'lhes', 'os', 'as', 'lo', 'la', 'los', 'las']
 
