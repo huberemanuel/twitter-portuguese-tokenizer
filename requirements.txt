@@ -1,7 +1,8 @@
 attrs==20.3.0
 click==7.1.2
--e git+https://github.com/huberemanuel/twitter-portuguese-tokenizer.git@90150370ec9d6e138d3a1520d33e8c656912ad85#egg=dante_tokenizer
+-e git+https://github.com/huberemanuel/twitter-portuguese-tokenizer.git@130613868dc936c9fb57131025f247603717e523#egg=dante_tokenizer
 e==1.4.5
+emoji==1.2.0
 iniconfig==1.1.1
 joblib==1.0.1
 nltk==3.6.2
@@ -18,3 +19,4 @@ regex==2021.4.4
 six==1.15.0
 toml==0.10.2
 tqdm==4.60.0
+twikenizer==1.0

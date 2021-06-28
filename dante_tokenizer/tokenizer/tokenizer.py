@@ -371,7 +371,7 @@ def predict_dante_tokenizer(sentences: list) -> list:
     sentences: list
         List of strings with pre-processed sentences.
     
-    Retunrs
+    Returns
     -------
     list:
         List of predicted tokens for each sentenec.
@@ -384,3 +384,23 @@ def predict_dante_tokenizer(sentences: list) -> list:
         pred_tokens.append(tokenizer.tokenize(sentence))
 
     return pred_tokens
+
+def predict_twikenizer(sentences: list) -> list:
+    """
+    Predict all sentences with Twikenizer.
+
+    Parameters
+    ----------
+    sentences: list
+        List of strings with pre-processed sentences.
+    
+    Returns
+    -------
+    list:
+        List of predicted tokens for each sentenec.
+    """
+    import twikenizer as twk
+    twk = twk.Twikenizer()
+
+    return list(map(twk.tokenize, sentences))
+

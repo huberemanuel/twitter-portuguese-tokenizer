@@ -8,7 +8,8 @@ from dante_tokenizer.evaluate import evaluate_dataset
 from dante_tokenizer.tokenizer import (
     predict_dante_tokenizer, 
     predict_nltk_twitter_tokenizer, 
-    predict_nltk_word_tokenizer
+    predict_nltk_word_tokenizer,
+    predict_twikenizer
 )
 
 
@@ -38,7 +39,8 @@ def main():
     tokenizers = [
         ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
         ("nltk Twitter Tokenizer", predict_nltk_twitter_tokenizer),
-        ("DANTE Tokenizer", predict_dante_tokenizer)
+        ("DANTE Tokenizer", predict_dante_tokenizer),
+        ("Twikenizer", predict_twikenizer),
     ]
 
     for name, tokenizer in tokenizers:
