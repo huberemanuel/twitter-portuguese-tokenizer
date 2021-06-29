@@ -131,7 +131,7 @@ REGEXPS = (
     |
     (?:(?:\d+[,/.:-])+\d+[+\-]?)  # Numbers, including fractions, decimals.
     |
-    (?:(?i)ex|BS|P|pr[ée]|p[óo]s|mega|a[çc][õo]es|day)-[\w]+ # ex-dividendos, etc.
+    (?:(?i)ex|BS|P|pr[ée]|p[óo]s|mega|day)-[\w]+ # ex-dividendos, etc.
     |
     (?:[$]?[^\W_](?:[^\W_]|['\_])+[^\W_]) # Words with apostrophes, considering numbers
     |
