@@ -39,8 +39,8 @@ def main():
     tokenizers = [
         ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
         ("nltk Twitter Tokenizer", predict_nltk_twitter_tokenizer),
-        ("DANTE Tokenizer", predict_dante_tokenizer),
         ("Twikenizer", predict_twikenizer),
+        ("DANTE Tokenizer", predict_dante_tokenizer),
     ]
 
     for name, tokenizer in tokenizers:
