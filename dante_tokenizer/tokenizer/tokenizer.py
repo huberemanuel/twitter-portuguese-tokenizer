@@ -1,14 +1,19 @@
 import argparse
-import regex
 import html
 
+import regex
 from nltk import tokenize
 
 from dante_tokenizer.data.load import read_test_data
+from dante_tokenizer.data.preprocessing import (
+    expand_contractions,
+    normalize_text,
+    split_enclisis,
+    split_monetary_tokens,
+)
 from dante_tokenizer.evaluate import evaluate_dataset
-from dante_tokenizer.data.preprocessing import expand_contractions, split_monetary_tokens, normalize_text, split_enclisis
 
-#region Regex definitions
+# region Regex definitions
 
 # This particular element is used in a couple ways, so we define it
 # with a name:
@@ -22,7 +27,7 @@ EMOTICONS = r"""
       [\)\]+\(\[dDpPoO/\:\}\{@\|\\]+ # mouth
       [\-o\*\']?                 # optional nose
       [:;=]                     # eyes
-      [<>]?
+      [<>]?\b
       |
       (?:\b[oO].[oO]\b)          # O.o O.o o.o O.O
       |
@@ -83,8 +88,8 @@ URLS = r"""			# Capture 1: entire matched URL
 REGEXPS = (
     URLS,
     # Phone numbers:
-    #r"""
-    #(?:
+    # r"""
+    # (?:
     #  (?:            # (international)
     #    \+?[01]
     #    [ *\-.\)]*
@@ -97,9 +102,7 @@ REGEXPS = (
     #  \d{3}          # exchange
     #  [ *\-.\)]*
     #  \d{4}          # base
-    #)""",
-    # ASCII Emoticons
-    EMOTICONS,
+    # )""",
     # HTML tags:
     r"""<[^>\s]+>""",
     # ASCII Arrows
@@ -145,12 +148,16 @@ REGEXPS = (
     |
     (?:\S)                         # Everything else that isn't whitespace.
     """,
+    # ASCII Emoticons
+    EMOTICONS,
 )
 
 ######################################################################
 # This is the core tokenizing regex:
 
-WORD_RE = regex.compile(r"""(%s)""" % "|".join(REGEXPS), regex.VERBOSE | regex.I | regex.UNICODE)
+WORD_RE = regex.compile(
+    r"""(%s)""" % "|".join(REGEXPS), regex.VERBOSE | regex.I | regex.UNICODE
+)
 
 # WORD_RE performs poorly on these patterns:
 HANG_RE = regex.compile(r"([^a-zA-Z0-9])\1{3,}")
@@ -162,9 +169,9 @@ EMOTICON_RE = regex.compile(EMOTICONS, regex.VERBOSE | regex.I | regex.UNICODE)
 # These are for regularizing HTML entities to Unicode:
 ENT_RE = regex.compile(r"&(#?(x?))([^&;\s]+);")
 
-#endregion
+# endregion
 
-#region Functions for converting html entities
+# region Functions for converting html entities
 
 
 class DanteTokenizer:
@@ -223,6 +230,7 @@ class DanteTokenizer:
                 map((lambda x: x if EMOTICON_RE.search(x) else x.lower()), words)
             )
         return words
+
 
 def _str_to_unicode(text, encoding=None, errors="strict"):
     if encoding is None:
@@ -292,10 +300,10 @@ def _replace_html_entities(text, keep=(), remove_illegal=True, encoding="utf-8")
     return ENT_RE.sub(_convert_entity, _str_to_unicode(text, encoding))
 
 
+# endregion
 
-#endregion
+# region Normalization functions
 
-#region Normalization functions
 
 def reduce_lengthening(text):
     """
@@ -316,17 +324,19 @@ def remove_handles(text):
     # Substitute handles with ' ' to ensure that text on either side of removed handles are tokenized correctly
     return pattern.sub(" ", text)
 
-#endregion
+
+# endregion
+
 
 def predict_nltk_word_tokenizer(sentences: list) -> list:
-    """ 
+    """
     Predict all sentences sequentially.
 
     Parameters
     ----------
     sentences: list
         List of strings with pre-processed sentences.
-    
+
     Retunrs
     -------
     list:
@@ -339,15 +349,16 @@ def predict_nltk_word_tokenizer(sentences: list) -> list:
 
     return pred_tokens
 
+
 def predict_nltk_twitter_tokenizer(sentences: list) -> list:
-    """ 
+    """
     Predict all sentences sequentially.
 
     Parameters
     ----------
     sentences: list
         List of strings with pre-processed sentences.
-    
+
     Retunrs
     -------
     list:
@@ -362,15 +373,16 @@ def predict_nltk_twitter_tokenizer(sentences: list) -> list:
 
     return pred_tokens
 
+
 def predict_dante_tokenizer(sentences: list) -> list:
-    """ 
+    """
     Predict all sentences sequentially.
 
     Parameters
     ----------
     sentences: list
         List of strings with pre-processed sentences.
-    
+
     Returns
     -------
     list:
@@ -385,6 +397,7 @@ def predict_dante_tokenizer(sentences: list) -> list:
 
     return pred_tokens
 
+
 def predict_twikenizer(sentences: list) -> list:
     """
     Predict all sentences with Twikenizer.
@@ -393,14 +406,14 @@ def predict_twikenizer(sentences: list) -> list:
     ----------
     sentences: list
         List of strings with pre-processed sentences.
-    
+
     Returns
     -------
     list:
         List of predicted tokens for each sentenec.
     """
     import twikenizer as twk
+
     twk = twk.Twikenizer()
 
     return list(map(twk.tokenize, sentences))
-

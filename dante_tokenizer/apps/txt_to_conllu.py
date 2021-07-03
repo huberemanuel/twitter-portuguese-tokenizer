@@ -1,13 +1,12 @@
 import argparse
 import os
 
-from dante_tokenizer.tokenizer import DanteTokenizer
 from dante_tokenizer.data.load import read_tokens_from_txt
-from dante_tokenizer.data.preprocessing import remove_quotes, reconstruct_html_chars
+from dante_tokenizer.data.preprocessing import reconstruct_html_chars, remove_quotes
 
 
 def tokenize_txt(txt_path: str) -> list:
-    """ 
+    """
     Runs DanteTokenizer for each row in the txt file, it is expected
     to the first column be the sentence id and the second to be the
     sentence text.
@@ -22,7 +21,7 @@ def tokenize_txt(txt_path: str) -> list:
     list
         List of parsed tokens for each sentence.
     """
-    
+
     sent_ids, sent_texts = read_tokens_from_txt(txt_path)
     # Preprocess input
     sent_texts = list(map(remove_quotes, sent_texts))
@@ -31,8 +30,10 @@ def tokenize_txt(txt_path: str) -> list:
 
     return sent_ids, sent_tokens, sent_texts
 
-def tokens_to_conllu(doc_name: str, sent_ids: list, sent_tokens: list, 
-                     sent_texts: list) -> list:
+
+def tokens_to_conllu(
+    doc_name: str, sent_ids: list, sent_tokens: list, sent_texts: list
+) -> list:
 
     """
     Create conllu string representation based on original sentences and tokens.
@@ -71,10 +72,11 @@ def tokens_to_conllu(doc_name: str, sent_ids: list, sent_tokens: list,
 
     return conllu_text
 
+
 def save_conllu(conllu_text: list, file_name: str) -> None:
-    """ 
+    """
     Creates conllu file.
-    
+
     Parameters
     ----------
     conllu_text: list
@@ -89,6 +91,7 @@ def save_conllu(conllu_text: list, file_name: str) -> None:
 
     conllu_file.close()
 
+
 def main():
     parser = argparse.ArgumentParser("Transforms txt file to conllu file")
     parser.add_argument("txt_path", type=str, help="Full path to the txt file")
@@ -98,6 +101,6 @@ def main():
     conllu_text = tokens_to_conllu(doc_name, sent_ids, sent_tokens, sent_texts)
     save_conllu(conllu_text, f"{doc_name}.conllu")
 
+
 if __name__ == "__main__":
     main()
-

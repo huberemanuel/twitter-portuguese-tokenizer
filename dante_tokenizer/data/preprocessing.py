@@ -1,8 +1,6 @@
 import re
 import unicodedata
 
-
-# TODO: Consider Caps Lock cases.
 contractions = {
     r"(?<![\w.])no(s)?(?![$\w])": r"em o\g<1>",
     r"(?<![\w.])na(s)?(?![$\w])": r"em a\g<1>",
@@ -40,13 +38,30 @@ contractions = {
     r"(?<![\w.])contigo(?![$\w])": r"com ti",
     r"(?<![\w.])né(?![$\w])": r"não é",
 }
-enclisis = ['me', 'te', 'se', 'lhe', 'o', 'a', 'nos', 'vos', 'lhes', 'os', 'as', 'lo', 'la', 'los', 'las']
+enclisis = [
+    "me",
+    "te",
+    "se",
+    "lhe",
+    "o",
+    "a",
+    "nos",
+    "vos",
+    "lhes",
+    "os",
+    "as",
+    "lo",
+    "la",
+    "los",
+    "las",
+]
 
 
 def split_enclisis(text: str):
     for enc in enclisis:
-        text = re.sub(r"\b(\w+)-("+enc+r")\b", r"\g<1> - \g<2>", text, flags=re.I)
+        text = re.sub(r"\b(\w+)-(" + enc + r")\b", r"\g<1> - \g<2>", text, flags=re.I)
     return text
+
 
 def reconstruct_html_chars(text: str) -> str:
     """
@@ -64,13 +79,14 @@ def reconstruct_html_chars(text: str) -> str:
     """
 
     wrong_char_regex = r"(\&[\w\d]+),"
-    
-    if not "&" in text:
+
+    if "&" not in text:
         return text
 
     text = re.sub(wrong_char_regex, r"\1;", text)
 
     return text
+
 
 def split_monetary_tokens(text: str) -> str:
     """
@@ -81,14 +97,19 @@ def split_monetary_tokens(text: str) -> str:
     ----------
     text: str
         Input sentence.
-    
+
     Returns
     -------
     str:
         Processed sentence.
     """
-    text = re.sub(r"\b(\d+)((?i)(?:mi?|tri?|bi?)(?:ilh)?[õoaã]?[oe]?s?|mil)\b", r"\g<1> \g<2>",text)
+    text = re.sub(
+        r"\b(\d+)((?i)(?:mi?|tri?|bi?)(?:ilh)?[õoaã]?[oe]?s?|mil)\b",
+        r"\g<1> \g<2>",
+        text,
+    )
     return text
+
 
 def replace_keep_case(word, replacement, text):
     """
@@ -108,15 +129,20 @@ def replace_keep_case(word, replacement, text):
     str:
         Processed string
     """
+
     def func(match):
         g = match.group()
         repl = match.expand(replacement)
-        if g.islower(): return repl.lower()
-        if g.istitle(): return repl.capitalize()
-        if g.isupper(): return repl.upper()
+        if g.islower():
+            return repl.lower()
+        if g.istitle():
+            return repl.capitalize()
+        if g.isupper():
+            return repl.upper()
         return repl
 
     return re.sub(word, func, text, flags=re.I)
+
 
 def expand_contractions(text: str) -> str:
     """
@@ -126,7 +152,7 @@ def expand_contractions(text: str) -> str:
     ----------
     text: str
         Text that may contain contractions.
-    
+
     Returns
     -------
     str:
@@ -139,7 +165,8 @@ def expand_contractions(text: str) -> str:
 
     return text
 
-def normalize_text(text:str) -> str:
+
+def normalize_text(text: str) -> str:
     """
     Normalize text to NFC which represents chars as an unique code.
 
@@ -155,6 +182,7 @@ def normalize_text(text:str) -> str:
     """
     return unicodedata.normalize("NFC", text)
 
+
 def remove_quotes(text: str) -> str:
     """
     Replace '' to double quotes.
@@ -165,7 +193,7 @@ def remove_quotes(text: str) -> str:
     ----------
     text:str
         Input sentence.
-    
+
     Returns
     -------
     str:
@@ -175,14 +203,13 @@ def remove_quotes(text: str) -> str:
     if len(text) < 3:
         return text
 
-    text = text.replace("\'\'", "\"")
+    text = text.replace("''", '"')
 
-    quote_marks = ["\"", "“", "”"]
+    quote_marks = ['"', "“", "”"]
     if text[0] in quote_marks and text[-1] in quote_marks:
         text = text[1:-1]
 
-    for quote_mark in ["\"", "\'"]:
+    for quote_mark in ['"', "'"]:
         if text.count(quote_mark) % 2 != 0:
             text = text.replace(quote_mark, "", 1)
     return text
-

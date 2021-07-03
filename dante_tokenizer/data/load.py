@@ -5,7 +5,7 @@ import pandas as pd
 from dante_tokenizer.data.preprocessing import remove_quotes
 
 
-def read_tokens_from_txt(txt_path: str, header: bool=False) -> (list, list):
+def read_tokens_from_txt(txt_path: str, header: bool = False) -> (list, list):
     """
     Read txt file and return tokens. The txt file should contain a tokenized sentences
     for each line, were tokens are separated by spaces.
@@ -26,9 +26,12 @@ def read_tokens_from_txt(txt_path: str, header: bool=False) -> (list, list):
             return []
         return list(range(len(data)))[1:], data[1:]
 
-def read_tokens_from_csv(csv_path: str, start_line:int = 0, n_sentences:int = -1) -> (list, list):
+
+def read_tokens_from_csv(
+    csv_path: str, start_line: int = 0, n_sentences: int = -1
+) -> (list, list):
     """
-    Read csv file and return tokens. The first colulmn should be 
+    Read csv file and return tokens. The first colulmn should be
     the tweet_id and the second the sentence text.
 
     Parameters
@@ -62,7 +65,7 @@ def read_tokens_from_csv(csv_path: str, start_line:int = 0, n_sentences:int = -1
     else:
         n_sentences = min(csv_df.shape[0], n_sentences + start_line)
 
-    for index, row in csv_df.iloc[start_line:n_sentences,:].iterrows():
+    for index, row in csv_df.iloc[start_line:n_sentences, :].iterrows():
 
         sent_id = row["tweet_id"]
         sent_text = row["text"]
@@ -73,10 +76,11 @@ def read_tokens_from_csv(csv_path: str, start_line:int = 0, n_sentences:int = -1
 
     return sent_ids, sent_texts
 
+
 def read_test_data(csv_path: str, conllu_path: str) -> dict:
     """
-    Read the unparsed sentences from a csv formatted file, expecting the second 
-    column to contain the raw sentence. Secondily, reads the formatted dataset 
+    Read the unparsed sentences from a csv formatted file, expecting the second
+    column to contain the raw sentence. Secondily, reads the formatted dataset
     on the CoNNL-U format to extract sentence's tokens.
 
     Obs: This function assumes that the row number of the csv_path file corresponds
@@ -120,7 +124,7 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
             conllu_text = match.group(0)
             sent_id = re.findall(conllu_sentence_id_regex, conllu_text)[0]
             tokens = []
-            
+
             tokens = re.findall(conllu_token_split_regex, conllu_text, re.MULTILINE)
 
             csv_line_idx = df[df["tweet_id"] == sent_id.split("_")[-1]].index[0] + 1
@@ -140,4 +144,3 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
         conllu_file.close()
 
     return sent_ids, sent_texts, sent_tokens
-

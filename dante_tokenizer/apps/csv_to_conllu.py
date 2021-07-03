@@ -1,13 +1,13 @@
 import argparse
 import os
 
-from dante_tokenizer.tokenizer import DanteTokenizer
 from dante_tokenizer.data.load import read_tokens_from_csv
-from dante_tokenizer.data.preprocessing import remove_quotes, reconstruct_html_chars
+from dante_tokenizer.data.preprocessing import reconstruct_html_chars, remove_quotes
+from dante_tokenizer.tokenizer import DanteTokenizer
 
 
-def tokenize_csv(csv_path: str, start_line:int, n_sentences: int) -> list:
-    """ 
+def tokenize_csv(csv_path: str, start_line: int, n_sentences: int) -> list:
+    """
     Runs DanteTokenizer for each row in the csv file, it is expected
     to the first column be the sentence id and the second to be the
     sentence text.
@@ -22,7 +22,7 @@ def tokenize_csv(csv_path: str, start_line:int, n_sentences: int) -> list:
     list
         List of parsed tokens for each sentence.
     """
-    
+
     sent_ids, sent_texts = read_tokens_from_csv(csv_path, start_line, n_sentences)
     # Preprocess input
     sent_texts = list(map(remove_quotes, sent_texts))
@@ -32,8 +32,10 @@ def tokenize_csv(csv_path: str, start_line:int, n_sentences: int) -> list:
 
     return sent_ids, sent_tokens, sent_texts
 
-def tokens_to_conllu(doc_name: str, sent_ids: list, sent_tokens: list, 
-                     sent_texts: list) -> list:
+
+def tokens_to_conllu(
+    doc_name: str, sent_ids: list, sent_tokens: list, sent_texts: list
+) -> list:
 
     """
     Create conllu string representation based on original sentences and tokens.
@@ -72,10 +74,11 @@ def tokens_to_conllu(doc_name: str, sent_ids: list, sent_tokens: list,
 
     return conllu_text
 
+
 def save_conllu(conllu_text: list, file_name: str) -> None:
-    """ 
+    """
     Creates conllu file.
-    
+
     Parameters
     ----------
     conllu_text: list
@@ -90,17 +93,27 @@ def save_conllu(conllu_text: list, file_name: str) -> None:
 
     conllu_file.close()
 
+
 def main():
     parser = argparse.ArgumentParser("Transforms csv file to conllu file")
     parser.add_argument("csv_path", type=str, help="Full path to the csv file")
-    parser.add_argument("--start_line", type=int, default=1, help="Start reading csv from specified line")
-    parser.add_argument("--n_sentences", type=int, default=-1, help="Read n_sentences from csv data")
+    parser.add_argument(
+        "--start_line",
+        type=int,
+        default=1,
+        help="Start reading csv from specified line",
+    )
+    parser.add_argument(
+        "--n_sentences", type=int, default=-1, help="Read n_sentences from csv data"
+    )
     args = parser.parse_args()
     doc_name = os.path.basename(args.csv_path)
-    sent_ids, sent_tokens, sent_texts = tokenize_csv(args.csv_path, args.start_line, args.n_sentences)
+    sent_ids, sent_tokens, sent_texts = tokenize_csv(
+        args.csv_path, args.start_line, args.n_sentences
+    )
     conllu_text = tokens_to_conllu(doc_name, sent_ids, sent_tokens, sent_texts)
     save_conllu(conllu_text, f"{doc_name}.conllu")
 
+
 if __name__ == "__main__":
     main()
-

@@ -3,6 +3,7 @@ import tempfile
 
 from dante_tokenizer.data.load import read_tokens_from_csv
 
+
 def test_test_tokens_from_csv():
 
     # Generate dummy data
@@ -12,7 +13,7 @@ def test_test_tokens_from_csv():
         with os.fdopen(temp_fd, "w") as tmp:
             tmp.write("tweet_id,text,etc\n")
             tmp.write("1,'text1',a\n")
-            tmp.write("2,\"text2\",a\n")
+            tmp.write('2,"text2",a\n')
             tmp.write("3,text3,a\n")
             tmp.write("4,te'x't4,a\n")
 
