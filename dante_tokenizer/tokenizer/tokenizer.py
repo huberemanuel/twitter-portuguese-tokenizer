@@ -1,17 +1,17 @@
-import argparse
 import html
+import logging
+import string
 
 import regex
+import spacy
 from nltk import tokenize
 
-from dante_tokenizer.data.load import read_test_data
 from dante_tokenizer.data.preprocessing import (
     expand_contractions,
     normalize_text,
     split_enclisis,
     split_monetary_tokens,
 )
-from dante_tokenizer.evaluate import evaluate_dataset
 
 # region Regex definitions
 
@@ -410,10 +410,39 @@ def predict_twikenizer(sentences: list) -> list:
     Returns
     -------
     list:
-        List of predicted tokens for each sentenec.
+        List of predicted tokens for each sentence.
     """
     import twikenizer as twk
 
     twk = twk.Twikenizer()
 
     return list(map(twk.tokenize, sentences))
+
+
+def predict_spacy(sentences: list) -> list:
+    """
+    Predict all sentences with Spacy Portuguese Tokenizer.
+    This Portuguese tokenizer is trained on Bosque 2.5.
+
+    Parameters
+    ----------
+    sentences: list
+        List of strings with pre-processed sentences.
+
+    Returns
+    -------
+    list:
+        List of predicted tokens for each sentence.
+    """
+    try:
+
+        nlp = spacy.load("pt_core_news_sm")
+        tokenizer = spacy.tokenizer.Tokenizer(nlp.vocab)
+        ret = []
+        for sent in sentences:
+            res = tokenizer(sent)
+            ret.append([x.text for x in res])
+        return ret
+    except IOError:
+        logging.error("Spacy pt_core_news isn't installed")
+        return []

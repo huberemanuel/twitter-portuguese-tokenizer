@@ -3,5 +3,6 @@ from dante_tokenizer.tokenizer.tokenizer import (
     predict_dante_tokenizer,
     predict_nltk_twitter_tokenizer,
     predict_nltk_word_tokenizer,
+    predict_spacy,
     predict_twikenizer,
 )

@@ -9,6 +9,7 @@ from dante_tokenizer.tokenizer import (
     predict_dante_tokenizer,
     predict_nltk_twitter_tokenizer,
     predict_nltk_word_tokenizer,
+    predict_spacy,
     predict_twikenizer,
 )
 
@@ -50,11 +51,15 @@ def main():
         ("nltk Word Tokenizer", predict_nltk_word_tokenizer),
         ("nltk Twitter Tokenizer", predict_nltk_twitter_tokenizer),
         ("Twikenizer", predict_twikenizer),
+        ("Spacy", predict_spacy),
         ("DANTE Tokenizer", predict_dante_tokenizer),
     ]
 
     for name, tokenizer in tokenizers:
         pred_tokens = tokenizer(sentences)
+
+        if not pred_tokens:
+            continue
 
         precision, recall, f_score, extra_metrics = evaluate_dataset(
             pred_tokens, true_tokens, complete_metrics=True
