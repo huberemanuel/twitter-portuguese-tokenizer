@@ -27,7 +27,7 @@ EMOTICONS = r"""
       [\)\]+\(\[dDpPoO/\:\}\{@\|\\]+ # mouth
       [\-o\*\']?                 # optional nose
       [:;=]                     # eyes
-      [<>]?\b
+      [<>]?
       |
       (?:\b[oO].[oO]\b)          # O.o O.o o.o O.O
       |
@@ -72,7 +72,7 @@ URLS = r"""			# Capture 1: entire matched URL
   )
   |					# OR, the following to match naked domains:
   (?:
-  	(?<!@)			        # not preceded by a @, avoid matching foo@_gmail.com_
+    (?<!@)			        # not preceded by a @, avoid matching foo@_gmail.com_
     [a-z0-9]+
     (?:[.\-][a-z0-9]+)*
     [.]
@@ -87,6 +87,8 @@ URLS = r"""			# Capture 1: entire matched URL
 # The components of the tokenizer:
 REGEXPS = (
     URLS,
+    # ASCII Emoticons
+    EMOTICONS,
     # Phone numbers:
     # r"""
     # (?:
@@ -148,8 +150,6 @@ REGEXPS = (
     |
     (?:\S)                         # Everything else that isn't whitespace.
     """,
-    # ASCII Emoticons
-    EMOTICONS,
 )
 
 ######################################################################
