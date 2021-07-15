@@ -15,6 +15,7 @@ iniconfig==1.1.1
 isort==5.9.1
 Jinja2==3.0.1
 joblib==1.0.1
+latextable==0.1.1
 MarkupSafe==2.0.1
 mccabe==0.6.1
 murmurhash==1.0.5
@@ -42,6 +43,8 @@ smart-open==5.1.0
 spacy==3.0.6
 spacy-legacy==3.0.6
 srsly==2.4.1
+tabulate==0.8.9
+texttable==1.6.4
 thinc==8.0.7
 toml==0.10.2
 tqdm==4.60.0

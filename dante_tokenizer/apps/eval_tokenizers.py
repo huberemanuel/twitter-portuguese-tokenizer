@@ -2,6 +2,10 @@ import argparse
 import glob
 import os
 
+import latextable
+from tabulate import tabulate
+from texttable import Texttable
+
 from dante_tokenizer.data.load import read_test_data
 from dante_tokenizer.data.preprocessing import reconstruct_html_chars, remove_quotes
 from dante_tokenizer.evaluate import evaluate_dataset
@@ -31,6 +35,12 @@ def main():
         action="store_true",
         help="Print detailed metrics and wrong sentence tokens",
     )
+    parser.add_argument(
+        "--output_table",
+        default=False,
+        action="store_true",
+        help="Wheter to output latex code to put in your awesome paper or not.",
+    )
     args = parser.parse_args()
 
     if os.path.isdir(args.conllu_path):
@@ -55,6 +65,8 @@ def main():
         ("DANTE Tokenizer", predict_dante_tokenizer),
     ]
 
+    table = [["Tokenizer", "Precision", "Recall", "Micro F-score"]]
+
     for name, tokenizer in tokenizers:
         pred_tokens = tokenizer(sentences)
 
@@ -65,14 +77,25 @@ def main():
             pred_tokens, true_tokens, complete_metrics=True
         )
 
-        print(
-            (
-                f"{name} precision: {precision}, recall: {recall}, f_score: {f_score}"
-                + f"true_positives: {extra_metrics['true_positives']} "
-                f"false_positives: {extra_metrics['false_positives']} false_negatives:"
-                + f"{extra_metrics['false_negatives']} "
-            )
+        table.append(
+            [
+                name,
+                "{:.4f} ± {:.4f}".format(precision[0], precision[1]),
+                "{:.4f} ± {:.4f}".format(recall[0], recall[1]),
+                "{:.4f} ± {:.4f}".format(f_score[0], f_score[1]),
+            ]
         )
+
+        if args.debug:
+            print(
+                (
+                    f"{name} precision: {precision}, recall: {recall}, "
+                    + f"f_score: {f_score} "
+                    + f"true_positives: {extra_metrics['true_positives']} "
+                    + f"false_positives: {extra_metrics['false_positives']} "
+                    + f"false_negatives: {extra_metrics['false_negatives']} "
+                )
+            )
 
         if args.debug:
             for incorrect_sentences_id in extra_metrics["incorrect_sentences_ids"]:
@@ -80,6 +103,16 @@ def main():
                 print(pred_tokens[incorrect_sentences_id])
                 print(true_tokens[incorrect_sentences_id])
             print()
+
+    latex_table = Texttable()
+    latex_table.set_cols_align(["c"] * 4)
+    latex_table.set_deco(Texttable.HEADER | Texttable.VLINES)
+    latex_table.add_rows(table)
+
+    print(latex_table.draw())
+
+    if args.output_table:
+        print(tabulate(table, headers="firstrow", tablefmt="latex"))
 
 
 if __name__ == "__main__":
