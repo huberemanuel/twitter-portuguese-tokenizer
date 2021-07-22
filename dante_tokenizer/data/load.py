@@ -83,9 +83,6 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
     column to contain the raw sentence. Secondily, reads the formatted dataset
     on the CoNNL-U format to extract sentence's tokens.
 
-    Obs: This function assumes that the row number of the csv_path file corresponds
-    to the conllu_path file `sent_id` field.
-
     Parameters
     ----------
     conllu_path: str
@@ -109,10 +106,8 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
     conllu_sentence_regex = r"(# newdoc[\s\S]*?[\r\n]{2})"
     conllu_sentence_id_regex = r"sent_id = (dante_01_.*)"
     conllu_token_split_regex = r"^[\d]+\t([^\t]*)"
-    csv_split_regex = r"(?:,|\n|^)(\"(?:(?:\"\")*[^\"]*)*\"|[^\",\n]*|(?:\n|$))"
 
     csv_file = open(csv_path, "r")
-    csv_data = csv_file.readlines()
     df = pd.read_csv(csv_path)
     conllu_file = open(conllu_path, "r")
     conllu_data = conllu_file.read()
@@ -127,11 +122,7 @@ def read_test_data(csv_path: str, conllu_path: str) -> dict:
 
             tokens = re.findall(conllu_token_split_regex, conllu_text, re.MULTILINE)
 
-            csv_line_idx = df[df["tweet_id"] == sent_id.split("_")[-1]].index[0] + 1
-            # print(sent_id, csv_line_idx)
-            csv_line = csv_data[csv_line_idx]
-            csv_matches = re.findall(csv_split_regex, csv_line)
-            sentence = csv_matches[1]
+            sentence = df[df["tweet_id"] == sent_id.split("_")[-1]]["text"].values[0]
             sentence = remove_quotes(sentence)
 
             sent_ids.append(sent_id)
