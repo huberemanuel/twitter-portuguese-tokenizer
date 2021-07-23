@@ -2,7 +2,7 @@ import argparse
 import glob
 import os
 
-import latextable
+import pandas as pd
 from tabulate import tabulate
 from texttable import Texttable
 
@@ -40,6 +40,12 @@ def main():
         default=False,
         action="store_true",
         help="Wheter to output latex code to put in your awesome paper or not.",
+    )
+    parser.add_argument(
+        "--save_results",
+        default=False,
+        action="store_true",
+        help="Save results on csv file",
     )
     args = parser.parse_args()
 
@@ -113,6 +119,10 @@ def main():
 
     if args.output_table:
         print(tabulate(table, headers="firstrow", tablefmt="latex"))
+
+    if args.save_results:
+        results = pd.DataFrame(table[1:], columns=table[0])
+        results.to_csv("results.csv", index=False)
 
 
 if __name__ == "__main__":
