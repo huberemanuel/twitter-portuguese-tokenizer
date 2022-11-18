@@ -17,6 +17,7 @@ contractions = {
     r"(?<![\w.])num(?![$\w])": r"em um",
     r"(?<![\w.])nuns(?![$\w])": r"em uns",
     r"(?<![\w.])numa(s)?(?![$\w])": r"em uma\g<1>",
+    r"(?<![\w.])duma(s)?(?![$\w])": r"de uma\g<1>",
     r"(?<![\w.])daqui(?![$\w])": r"de aqui",
     r"(?<![\w.])daquele(s)?(?![$\w])": r"de aquele\g<1>",
     r"(?<![\w.])daquela(s)?(?![$\w])": r"de aquela\g<1>",
